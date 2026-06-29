@@ -27,7 +27,7 @@ export default function ProfessionalPage() {
               <p className="text-xs font-bold tracking-[0.2em] uppercase mb-8" style={{ color: "rgba(250,249,246,0.35)" }}>Professional</p>
               <div className="flex items-center gap-4 mb-10">
                 <div className="flex flex-col gap-2">
-                  <p className="text-sm" style={{ color: "rgba(250,249,246,0.4)" }}>Finance · Consulting · Strategy</p>
+                  <p className="text-sm" style={{ color: "rgba(250,249,246,0.4)" }}>Fortune favors the bold.</p>
                   <IconLinks dark links={[{ key: "linkedin", href: "https://linkedin.com/in/", label: "LinkedIn" }]} />
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function ProfessionalPage() {
       <section className="py-20 px-6 md:px-16">
         <SectionReveal>
           <div className="max-w-6xl mx-auto">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase mb-8" style={{ color: "rgba(44,40,37,0.3)" }}>By the numbers</p>
+            <p className="text-xs font-bold tracking-[0.2em] uppercase mb-8" style={{ color: "rgba(44,40,37,0.3)" }}>At a glance.</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {PROFESSIONAL_STATS.map((stat) => (
                 <GlassCard key={stat.label} className="p-6 text-center">

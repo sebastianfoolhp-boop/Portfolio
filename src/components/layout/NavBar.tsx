@@ -24,9 +24,9 @@ export default function NavBar() {
         <div
           className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm"
           style={{
-            background: "rgba(27,42,74,0.08)",
-            border: "1px solid rgba(27,42,74,0.2)",
-            color: "#1B2A4A",
+            background: "#1A1716",
+            border: "1px solid #1A1716",
+            color: "#FAF9F6",
             fontFamily: "cursive",
             fontStyle: "italic",
           }}

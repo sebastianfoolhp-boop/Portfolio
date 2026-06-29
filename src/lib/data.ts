@@ -51,12 +51,12 @@ export const HOME_TEASERS = [
 // Audio / Music page
 // -----------------------------------------------------------
 export const AUDIO_SETS = [
-  { id: 1, label: "Live Set 01", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628510053397450015?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 2, label: "Live Set 02", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628509507957673246?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 3, label: "Live Set 03", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628508511298702622?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 4, label: "Live Set 04", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7626649668910337311?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 5, label: "Live Set 05", sublabel: "Coming Soon", duration: "", href: "", isTikTok: false },
-  { id: 6, label: "Live Set 06", sublabel: "Coming Soon", duration: "", href: "", isTikTok: false },
+  { id: 1, label: "Short Mix - TikTok", sublabel: "Tech House", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628510053397450015?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 2, label: "Short Mix - TikTok", sublabel: "Pop/Rap", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628509507957673246?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 3, label: "Short Mix - TikTok", sublabel: "Phonk Tech House", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628508511298702622?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 4, label: "Short Mix - TikTok", sublabel: "House", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7626649668910337311?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 5, label: "", sublabel: "", duration: "", href: "", isTikTok: false },
+  { id: 6, label: "", sublabel: "", duration: "", href: "", isTikTok: false },
 ];
 
 export const AUDIO_GEAR = [
@@ -95,8 +95,8 @@ export const VIDEO_EMBEDS: { title: string; src: string }[] = [
 export const PROFESSIONAL_STATS = [
   { value: "7", label: "Case competitions" },
   { value: "3", label: "Countries competed in" },
-  { value: "2x", label: "International finalist" },
-  { value: "180°", label: "Co-founded UF's chapter" },
+  { value: "AI", label: "Certification from UF" },
+  { value: "2", label: "Languages: EN & ES" },
 ];
 
 export const COMPETITION_RESULTS = [
@@ -143,7 +143,7 @@ export const PROFESSIONAL_CARDS = [
   },
   {
     title: "Case Competitions",
-    body: "Active competitor in case circuits internationally, 2x finalist and 3x domestic champion.",
+    body: "Active competitor in case circuits internationally, 2x international finalist and 3x domestic champion.",
   },
   {
     title: "Communication",
@@ -187,7 +187,7 @@ export const CONTACT_LINKS = [
 // Thumbnail is auto-fetched from YouTube at https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg
 // -----------------------------------------------------------
 export const AUDIO_YOUTUBE: { title: string; videoId: string; label?: string }[] = [
-  { title: "Latest DJ Set", videoId: "xfKKhH5rUEg", label: "House · Deep" },
+  { title: "Latest DJ Set", videoId: "xfKKhH5rUEg", label: "Reggaeton" },
 ];
 
 export const VISUAL_YOUTUBE: { title: string; videoId: string; label?: string }[] = [

@@ -54,7 +54,7 @@ export default async function AudioPage() {
         <SectionReveal>
           <div className="max-w-6xl mx-auto">
             <p className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-center" style={{ color: "rgba(44,40,37,0.3)" }}>Latest Video</p>
-            <div className="max-w-2xl mx-auto">
+            <div className="w-full md:w-2/3 mx-auto">
               <VideoGrid videos={videos} previewCount={1} accentColor="#1B2A4A" sectionLabel="Audio" />
             </div>
           </div>
