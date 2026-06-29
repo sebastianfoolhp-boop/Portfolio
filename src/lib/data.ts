@@ -14,15 +14,13 @@ export const NAV_LINKS = [
 // -----------------------------------------------------------
 export const HOME_HERO = {
   name: "SEBASTIAN",
-  tagline: " A closer look at what drives me.",
-  // DRAFT — review and edit this copy
+  tagline: "La buena fai.",
   heroCopy: "I live at the intersection of spreadsheets and speaker stacks.",
 };
 
 export const HOME_ABOUT = {
-  heading: "Two worlds, one perspective.",
-  // DRAFT — review and edit
-  body: `A business student at UF with Colombian roots, I'm passionate about finance, music, and anything with an international angle. I love connecting ideas across worlds, whether that's in a business, a DJ set, or somewhere I've never been before.`,
+  heading: `Sebastian "Sebas" Perez`,
+  body: `Colombian roots, global ambitions, and a permanent bias toward doing the hard thing.`,
 };
 
 export const HOME_TEASERS = [
@@ -53,12 +51,12 @@ export const HOME_TEASERS = [
 // Audio / Music page
 // -----------------------------------------------------------
 export const AUDIO_SETS = [
-  { id: 1, label: "Live Set 01", sublabel: "House · Deep", duration: "1h 12m" },
-  { id: 2, label: "Live Set 02", sublabel: "Tech House", duration: "58m" },
-  { id: 3, label: "Live Set 03", sublabel: "Afro House", duration: "1h 05m" },
-  { id: 4, label: "Live Set 04", sublabel: "Melodic Techno", duration: "1h 20m" },
-  { id: 5, label: "Live Set 05", sublabel: "Sunset Session", duration: "45m" },
-  { id: 6, label: "Live Set 06", sublabel: "Late Night", duration: "1h 30m" },
+  { id: 1, label: "Live Set 01", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628510053397450015?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 2, label: "Live Set 02", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628509507957673246?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 3, label: "Live Set 03", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628508511298702622?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 4, label: "Live Set 04", sublabel: "House · Deep", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7626649668910337311?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
+  { id: 5, label: "Live Set 05", sublabel: "Coming Soon", duration: "", href: "", isTikTok: false },
+  { id: 6, label: "Live Set 06", sublabel: "Coming Soon", duration: "", href: "", isTikTok: false },
 ];
 
 export const AUDIO_GEAR = [
@@ -95,10 +93,10 @@ export const VIDEO_EMBEDS: { title: string; src: string }[] = [
 // Professional page
 // -----------------------------------------------------------
 export const PROFESSIONAL_STATS = [
-  { value: "10+", label: "Case competitions" },
-  { value: "5+", label: "Countries competed in" },
-  { value: "3", label: "International podium finishes" },
-  { value: "180°", label: "Consulting chapter co-founded" },
+  { value: "7", label: "Case competitions" },
+  { value: "3", label: "Countries competed in" },
+  { value: "2x", label: "International finalist" },
+  { value: "180°", label: "Co-founded UF's chapter" },
 ];
 
 export const COMPETITION_RESULTS = [
@@ -110,29 +108,26 @@ export const COMPETITION_RESULTS = [
 export const PROFESSIONAL_NARRATIVE = [
   {
     number: "01",
-    heading: "Why finance and strategy matter to me",
-    // DRAFT
+    heading: "Every business has untapped potential.",
     paragraphs: [
-      "Finance, at its core, is about making decisions under uncertainty. What draws me in is not the models themselves but what they represent: a structured way to cut through noise and tell a true story about where value lives and where it doesn't.",
-      "I think about financial analysis the same way I think about a good mix or a well-framed shot. The technique is in service of something bigger. The goal is clarity, and then impact.",
+      "The question is never whether it exists.",
+      "It's whether you're willing to go find it.",
     ],
   },
   {
     number: "02",
-    heading: "What I have done so far",
-    // DRAFT
+    heading: "Momentum doesn't build itself.",
     paragraphs: [
-      "I helped co-found the 180 Degrees Consulting chapter at the University of Florida, bringing pro-bono consulting to nonprofits and social enterprises that otherwise wouldn't have access to that kind of strategic support.",
-      "I've competed in case competitions across multiple countries, going up against graduate students and professionals on problems ranging from M&A strategy to market entry to financial restructuring. Those rooms taught me how to think fast, communicate clearly, and back a position.",
+      "Sometimes you need someone to see what you can't.",
+      "Sometimes you just need a push in the right direction.",
     ],
   },
   {
     number: "03",
-    heading: "What I bring that's different",
-    // DRAFT
+    heading: "That's what I do.",
     paragraphs: [
-      "I lead with analytical rigor and back it with the kind of creative pattern recognition that comes from spending serious time in music and visual storytelling. Those aren't separate skills. They cross-pollinate.",
-      "Reading a room during a live set and reading a client during a pitch are not that different. Both require you to stay calibrated to what's actually landing and adjust in real time. That's a muscle I've been building for years, across contexts most people keep separate.",
+      "I help businesses cut through the noise, find their edge, and move the needle.",
+      "Growth starts with an honest conversation. Let's have one.",
     ],
   },
 ];
@@ -140,15 +135,15 @@ export const PROFESSIONAL_NARRATIVE = [
 export const PROFESSIONAL_CARDS = [
   {
     title: "Education",
-    body: "B.S. Business Administration, University of Florida. Focus on finance and strategic management.",
+    body: "B.S. Business Administration, University of Florida. Focus on finance, communication, and leadership.",
   },
   {
     title: "Leadership",
-    body: "Co-founded 180 Degrees Consulting UF chapter — one of the world's largest student consultancies.",
+    body: "Co-founded UF's chapter of 180 Degrees Consulting — one of the world's largest student consultancies.",
   },
   {
     title: "Case Competitions",
-    body: "Active competitor in international case circuits across North America, Europe, and Southeast Asia.",
+    body: "Active competitor in case circuits internationally, 2x finalist and 3x domestic champion.",
   },
   {
     title: "Communication",
@@ -170,19 +165,19 @@ export const CONTACT_LINKS = [
     icon: "linkedin",
     label: "LinkedIn",
     description: "Connect with me professionally",
-    href: "https://linkedin.com/in/", // ← paste your LinkedIn URL here
+    href: "https://linkedin.com/in/",
   },
   {
     icon: "instagram",
     label: "Instagram",
     description: "Photos, sets, and everything in between",
-    href: "https://instagram.com/", // ← paste your Instagram URL here
+    href: "https://www.instagram.com/sxbxssp/",
   },
   {
     icon: "email",
     label: "Email",
-    description: "sebastianfoolhp@gmail.com", // ← update if needed
-    href: "mailto:sebastianfoolhp@gmail.com",
+    description: "sebastiaperez@ufl.edu",
+    href: "mailto:sebastiaperez@ufl.edu",
   },
 ];
 
@@ -192,8 +187,7 @@ export const CONTACT_LINKS = [
 // Thumbnail is auto-fetched from YouTube at https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg
 // -----------------------------------------------------------
 export const AUDIO_YOUTUBE: { title: string; videoId: string; label?: string }[] = [
-  // Example — uncomment and replace VIDEO_ID:
-  // { title: "Live Set @ [Venue]", videoId: "dQw4w9WgXcQ", label: "House · Deep" },
+  { title: "Latest DJ Set", videoId: "xfKKhH5rUEg", label: "House · Deep" },
 ];
 
 export const VISUAL_YOUTUBE: { title: string; videoId: string; label?: string }[] = [
@@ -205,7 +199,7 @@ export const VISUAL_YOUTUBE: { title: string; videoId: string; label?: string }[
 // Socials (legacy — kept for nav/footer use)
 // -----------------------------------------------------------
 export const SOCIALS = {
-  instagram: "https://instagram.com/",
+  instagram: "https://www.instagram.com/sxbxssp/",
   linkedin: "https://linkedin.com/in/",
   soundcloud: "https://soundcloud.com/",
 };

@@ -13,7 +13,7 @@ export const revalidate = 60;
 // Update hrefs with your real links
 const VISUAL_LINKS = [
   { key: "onedrive", href: "https://onedrive.live.com/", label: "OneDrive Photos" },
-  { key: "youtube", href: "https://youtube.com/@", label: "YouTube Channel" },
+  { key: "youtube", href: "https://www.youtube.com/@SebasPerez-sp", label: "YouTube Channel" },
 ];
 
 export default async function VisualPage() {

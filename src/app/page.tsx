@@ -45,7 +45,7 @@ export default function HomePage() {
             className="mt-4 text-lg md:text-xl font-medium max-w-lg"
             style={{ color: "rgba(250,249,246,0.5)" }}
           >
-            Finance meets music. Numbers meet frames.
+            La buena fai.
           </motion.p>
         </div>
         <NavBar />

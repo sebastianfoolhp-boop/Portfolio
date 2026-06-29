@@ -12,10 +12,10 @@ export const revalidate = 60;
 
 // Update hrefs with your real links
 const AUDIO_SOCIALS = [
-  { key: "youtube", href: "https://youtube.com/@", label: "YouTube" },
+  { key: "youtube", href: "https://www.youtube.com/@SebasPerez-sp", label: "YouTube" },
   { key: "soundcloud", href: "https://soundcloud.com/", label: "SoundCloud" },
-  { key: "tiktok", href: "https://tiktok.com/@", label: "TikTok" },
-  { key: "instagram", href: "https://instagram.com/", label: "Instagram" },
+  { key: "tiktok", href: "https://www.tiktok.com/@sebxsjairo", label: "TikTok" },
+  { key: "instagram", href: "https://www.instagram.com/sxbxssp/", label: "Instagram" },
 ];
 
 export default async function AudioPage() {
@@ -25,7 +25,7 @@ export default async function AudioPage() {
   ]);
 
   const sets = sanitySets.length > 0
-    ? sanitySets.map((s) => ({ id: s._id, label: s.label, sublabel: s.sublabel ?? "", duration: s.duration ?? "", embedCode: s.embedCode }))
+    ? sanitySets.map((s) => ({ id: s._id, label: s.label, sublabel: s.sublabel ?? "", duration: s.duration ?? "", embedCode: s.embedCode, href: undefined, isTikTok: false }))
     : AUDIO_SETS.map((s) => ({ ...s, id: String(s.id), embedCode: undefined }));
 
   const videos = sanityVideos.length > 0

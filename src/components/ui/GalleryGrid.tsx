@@ -30,10 +30,10 @@ function PhotoCell({ img, index, onClick }: { img: GalleryImage; index: number; 
         <img src={img.src} alt={img.alt} className={`w-full object-cover ${img.aspect === "portrait" ? "aspect-[3/4]" : "aspect-video"}`} />
       ) : (
         <div
-          className={`w-full flex items-center justify-center ${img.aspect === "portrait" ? "aspect-[3/4]" : "aspect-video"}`}
-          style={{ background: `linear-gradient(135deg, rgba(27,42,74,0.04) 0%, rgba(27,42,74,0.02) 100%)` }}
+          className={`w-full flex flex-col items-center justify-center gap-2 ${img.aspect === "portrait" ? "aspect-[3/4]" : "aspect-video"}`}
+          style={{ background: "rgba(27,42,74,0.04)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
         >
-          <span className="text-xs tracking-widest uppercase" style={{ color: "rgba(44,40,37,0.2)" }}>{img.alt}</span>
+          <span className="text-xs font-bold tracking-widest uppercase" style={{ color: "rgba(27,42,74,0.25)" }}>Coming Soon</span>
         </div>
       )}
       <div
