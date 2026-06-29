@@ -93,9 +93,9 @@ export const VIDEO_EMBEDS: { title: string; src: string }[] = [
 // Professional page
 // -----------------------------------------------------------
 export const PROFESSIONAL_STATS = [
-  { value: "7", label: "Case competitions" },
-  { value: "3", label: "Countries competed in" },
   { value: "AI", label: "Certification from UF" },
+  { value: "JPMorgan", label: "Commercial Banking Summer '26 Intern" },
+  { value: "7", label: "Case competitions" },
   { value: "2", label: "Languages: EN & ES" },
 ];
 

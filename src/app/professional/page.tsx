@@ -105,7 +105,7 @@ export default function ProfessionalPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {PROFESSIONAL_STATS.map((stat) => (
                 <GlassCard key={stat.label} className="p-6 text-center">
-                  <p className="text-4xl font-black" style={{ color: "#1B2A4A" }}>{stat.value}</p>
+                  <p className="font-black" style={{ color: "#1B2A4A", fontSize: "clamp(20px, 3.2vw, 36px)" }}>{stat.value}</p>
                   <p className="mt-2 text-xs font-medium tracking-wide" style={{ color: "rgba(44,40,37,0.4)" }}>{stat.label}</p>
                 </GlassCard>
               ))}

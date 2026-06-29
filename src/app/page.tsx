@@ -82,21 +82,21 @@ export default function HomePage() {
                 <SectionReveal key={teaser.href} delay={i * 0.08}>
                   <Link href={teaser.href}
                     className="group block h-64 rounded-2xl overflow-hidden relative transition-all duration-300"
-                    style={{ background: "#FFFFFF", border: "1px solid rgba(27,42,74,0.09)", boxShadow: "0 1px 12px rgba(27,42,74,0.06)" }}
+                    style={{ background: "#1A1716", border: "1px solid rgba(250,249,246,0.06)", boxShadow: "0 1px 12px rgba(0,0,0,0.18)" }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(27,42,74,0.14)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(27,42,74,0.2)";
+                      (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.32)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(250,249,246,0.14)";
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 12px rgba(27,42,74,0.06)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(27,42,74,0.09)";
+                      (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 12px rgba(0,0,0,0.18)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(250,249,246,0.06)";
                     }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-2xl font-black tracking-tight" style={{ color: "#1A1716" }}>{teaser.label}</span>
+                      <span className="text-2xl font-black tracking-tight" style={{ color: "#FAF9F6" }}>{teaser.label}</span>
                     </div>
                     <div className="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-sm font-bold"
-                      style={{ color: "#1B2A4A" }}>→</div>
+                      style={{ color: "rgba(250,249,246,0.6)" }}>→</div>
                   </Link>
                 </SectionReveal>
               ))}

@@ -25,7 +25,7 @@ export default function VideoGrid({ videos, previewCount = 2, accentColor = "#1B
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid gap-4 ${preview.length === 1 ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"}`}>
             {preview.map((v) => (
               <YouTubeCard key={v.videoId} videoId={v.videoId} title={v.title} label={v.label} />
             ))}
