@@ -21,59 +21,34 @@ export default function PageHero({
   fullHeight = false,
   children,
 }: PageHeroProps) {
-  const height = fullHeight ? "100vh" : "70vh";
+  const height = fullHeight ? "calc(100vh - 64px)" : "72vh";
   const minHeight = fullHeight ? "600px" : "480px";
 
   return (
     <section
-      className="relative flex items-center justify-center overflow-hidden"
-      style={{ height, minHeight }}
+      className="relative flex items-center justify-center overflow-hidden img-zoom"
+      style={{ height, minHeight, background: "#1A1716" }}
     >
-      {/* Video background */}
       {videoSrc ? (
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          src={videoSrc}
-        />
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" src={videoSrc} />
       ) : imageSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={imageSrc}
-          alt={imageAlt ?? title}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      ) : (
-        <div className="absolute inset-0" style={{ background: "#1A1716" }} />
-      )}
+        <img src={imageSrc} alt={imageAlt ?? title} className="absolute inset-0 w-full h-full object-cover" />
+      ) : null}
 
-      {/* Color accent gradient */}
-      {colorGradient && (
-        <div className="absolute inset-0" style={{ background: colorGradient }} />
-      )}
+      {colorGradient && <div className="absolute inset-0" style={{ background: colorGradient }} />}
 
-      {/* Dark vignette overlay */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "rgba(10,9,8,0.45)" }}
-      />
+      <div className="absolute inset-0" style={{ background: "rgba(10,9,8,0.42)" }} />
 
-      {/* Centered text */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-16">
         <h1
-          className="font-black tracking-tighter text-white leading-none"
-          style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)" }}
+          className="font-serif text-white uppercase leading-none"
+          style={{ fontSize: "clamp(2.6rem, 7vw, 6rem)", letterSpacing: "0.2em", fontWeight: 300, paddingLeft: "0.2em" }}
         >
           {title}
         </h1>
         {subtitle && (
-          <p
-            className="mt-4 text-base md:text-lg max-w-xl"
-            style={{ color: "rgba(250,249,246,0.55)" }}
-          >
+          <p className="eyebrow mt-6" style={{ color: "rgba(250,249,246,0.7)" }}>
             {subtitle}
           </p>
         )}

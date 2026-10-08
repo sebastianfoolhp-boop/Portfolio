@@ -1,5 +1,3 @@
-import NavBar from "@/components/layout/NavBar";
-import GlassCard from "@/components/ui/GlassCard";
 import SectionReveal from "@/components/ui/SectionReveal";
 import PageHero from "@/components/ui/PageHero";
 import VideoGrid from "@/components/ui/VideoGrid";
@@ -10,7 +8,6 @@ import { getAudioSets, getYouTubeVideos } from "@/sanity/lib/queries";
 
 export const revalidate = 60;
 
-// Update hrefs with your real links
 const AUDIO_SOCIALS = [
   { key: "youtube", href: "https://www.youtube.com/@SebasPerez-sp", label: "YouTube" },
   { key: "soundcloud", href: "https://soundcloud.com/", label: "SoundCloud" },
@@ -37,60 +34,67 @@ export default async function AudioPage() {
   return (
     <main style={{ background: "#FAF9F6" }}>
       <PageHero
-        title="AUDIO"
-        subtitle="DJ sets, mixes, and live sessions."
-        colorGradient="radial-gradient(ellipse at 30% 60%, rgba(255,80,0,0.55) 0%, rgba(255,30,80,0.3) 45%, transparent 70%)"
+        title="Audio"
+        subtitle="DJ sets, mixes, and live sessions"
+        colorGradient="radial-gradient(ellipse at 30% 60%, rgba(92,42,46,0.75) 0%, rgba(27,42,74,0.35) 50%, transparent 75%)"
       />
-      <NavBar />
 
-      {/* Social icons */}
-      <section className="pt-12 pb-2 px-6 md:px-16">
-        <div className="max-w-6xl mx-auto">
+      {/* Socials */}
+      <section className="pt-14 px-6 md:px-12 lg:px-16">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6 flex-wrap">
+          <span className="eyebrow" style={{ color: "rgba(44,40,37,0.5)" }}>Follow</span>
           <IconLinks links={AUDIO_SOCIALS} />
         </div>
       </section>
 
-      <section className="py-16 px-6 md:px-16">
+      {/* Latest */}
+      <section className="py-20 md:py-24 px-6 md:px-12 lg:px-16">
         <SectionReveal>
-          <div className="max-w-6xl mx-auto">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-center" style={{ color: "rgba(44,40,37,0.3)" }}>Latest Video</p>
-            <div style={{ maxWidth: "66%", margin: "0 auto" }}>
-              <VideoGrid videos={videos} previewCount={1} accentColor="#1B2A4A" sectionLabel="Audio" />
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10">
+              <span className="eyebrow" style={{ color: "#5C2A2E" }}>Latest Set</span>
+            </div>
+            <div className="w-full md:w-2/3 mx-auto">
+              <VideoGrid videos={videos} previewCount={1} sectionLabel="Audio" />
             </div>
           </div>
         </SectionReveal>
       </section>
 
-      <div className="px-6 md:px-16"><div className="max-w-6xl mx-auto h-px" style={{ background: "rgba(27,42,74,0.07)" }} /></div>
+      <div className="px-6 md:px-12 lg:px-16"><div className="max-w-7xl mx-auto hairline" /></div>
 
-      <section className="py-16 px-6 md:px-16">
+      {/* Sets */}
+      <section className="py-20 md:py-24 px-6 md:px-12 lg:px-16">
         <SectionReveal>
-          <div className="max-w-6xl mx-auto">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase mb-8" style={{ color: "rgba(44,40,37,0.3)" }}>Sets & Mixes</p>
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-end justify-between mb-10">
+              <h2 className="font-serif leading-none" style={{ color: "#1A1716", fontSize: "clamp(2rem, 3.4vw, 2.75rem)", fontWeight: 400 }}>Sets &amp; Mixes</h2>
+              <span className="eyebrow hidden sm:block" style={{ color: "rgba(44,40,37,0.45)" }}>Short form</span>
+            </div>
             <AudioSetsGrid sets={sets} />
           </div>
         </SectionReveal>
       </section>
 
-      <div className="px-6 md:px-16"><div className="max-w-6xl mx-auto h-px" style={{ background: "rgba(27,42,74,0.07)" }} /></div>
+      <div className="px-6 md:px-12 lg:px-16"><div className="max-w-7xl mx-auto hairline" /></div>
 
-      <section className="py-16 pb-28 px-6 md:px-16">
+      {/* Listen */}
+      <section className="py-20 md:py-24 pb-32 px-6 md:px-12 lg:px-16">
         <SectionReveal>
-          <div className="max-w-6xl mx-auto">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase mb-8" style={{ color: "rgba(44,40,37,0.3)" }}>Listen</p>
-            <GlassCard className="p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-10">
+              <span className="eyebrow" style={{ color: "rgba(44,40,37,0.5)" }}>Listen</span>
+            </div>
+            <div className="p-8" style={{ border: "1px solid rgba(27,42,74,0.14)", background: "#FFFFFF" }}>
               {embedSet?.embedCode ? (
                 <div dangerouslySetInnerHTML={{ __html: embedSet.embedCode }} />
               ) : (
-                <div className="flex flex-col items-center justify-center h-32 gap-3">
-                  <p className="text-sm text-center" style={{ color: "rgba(44,40,37,0.35)" }}>
-                    Add a SoundCloud or Spotify embed in the{" "}
-                    <span style={{ color: "#1B2A4A" }}>Sanity studio</span>{" "}
-                    under Sets & Mixes
-                  </p>
+                <div className="flex flex-col items-center justify-center h-32 gap-2">
+                  <span className="eyebrow" style={{ color: "rgba(27,42,74,0.45)" }}>Coming Soon</span>
+                  <span className="font-serif italic" style={{ color: "rgba(27,42,74,0.4)", fontSize: "18px" }}>Full-length mixes</span>
                 </div>
               )}
-            </GlassCard>
+            </div>
           </div>
         </SectionReveal>
       </section>

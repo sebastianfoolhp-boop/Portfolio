@@ -21,6 +21,7 @@ export const HOME_HERO = {
 export const HOME_ABOUT = {
   heading: `Sebastian "Sebas" Perez`,
   body: `Colombian roots, global ambitions, and a permanent bias toward doing the hard thing.`,
+  meta: `UF Warrington, Class of 2027 · Philosophy Minor · Incoming McKinsey & Company`,
 };
 
 export const HOME_TEASERS = [
@@ -92,6 +93,34 @@ export const VIDEO_EMBEDS: { title: string; src: string }[] = [
 // -----------------------------------------------------------
 // Professional page
 // -----------------------------------------------------------
+export const PROFESSIONAL_HERO = {
+  headline: "Building a career at the edge of finance and strategy.",
+  pull: "Fortune favors the bold.",
+  meta1: "Incoming McKinsey & Company · JPMorgan Chase Summer Analyst",
+  meta2: "UF Warrington, May 2027 · Philosophy Minor · Florida",
+};
+
+export const EXPERIENCE = [
+  {
+    period: "Incoming",
+    org: "McKinsey & Company",
+    role: "Incoming",
+    detail: "",
+  },
+  {
+    period: "Summer 2026",
+    org: "JPMorgan Chase",
+    role: "Summer Analyst · Commercial & Specialized Industries",
+    detail: "Commercial Banking intern training program.",
+  },
+  {
+    period: "University of Florida",
+    org: "180 Degrees Consulting",
+    role: "Co-Founder, UF Chapter",
+    detail: "Pro-bono strategy consulting for nonprofits and social enterprises, as part of one of the world's largest student consultancies.",
+  },
+];
+
 export const PROFESSIONAL_STATS = [
   { value: "AI", label: "Certification from UF" },
   { value: "JPMorgan", label: "Commercial Banking Summer '26 Intern" },
@@ -135,7 +164,7 @@ export const PROFESSIONAL_NARRATIVE = [
 export const PROFESSIONAL_CARDS = [
   {
     title: "Education",
-    body: "B.S. Business Administration, University of Florida. Focus on finance, communication, and leadership.",
+    body: "B.S. Business Administration, UF Warrington College of Business, May 2027. Minor in Philosophy. Focus on finance, communication, and leadership.",
   },
   {
     title: "Leadership",

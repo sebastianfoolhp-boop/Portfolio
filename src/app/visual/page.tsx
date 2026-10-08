@@ -1,4 +1,3 @@
-import NavBar from "@/components/layout/NavBar";
 import SectionReveal from "@/components/ui/SectionReveal";
 import PageHero from "@/components/ui/PageHero";
 import GalleryGrid from "@/components/ui/GalleryGrid";
@@ -29,7 +28,7 @@ export default async function VisualPage() {
         .filter((p) => p.category !== "Cinematography")
         .map((p) => ({
           id: p._id,
-          src: galleryImageUrl(p, 800),
+          src: galleryImageUrl(p, 1200),
           alt: p.alt ?? "",
           category: p.category ?? "Photography",
           aspect: p.aspect ?? "landscape",
@@ -43,54 +42,43 @@ export default async function VisualPage() {
   return (
     <main style={{ background: "#FAF9F6" }}>
       <PageHero
-        title="VISUAL"
-        subtitle="Photography and cinematography."
-        colorGradient="radial-gradient(ellipse at 65% 40%, rgba(0,120,255,0.55) 0%, rgba(0,200,255,0.25) 45%, transparent 70%)"
+        title="Visual"
+        subtitle="Photography and cinematography"
+        colorGradient="radial-gradient(ellipse at 65% 40%, rgba(27,42,74,0.85) 0%, rgba(31,61,43,0.4) 50%, transparent 75%)"
       />
-      <NavBar />
 
-      {/* Icon links */}
-      <section className="pt-12 pb-2 px-6 md:px-16">
-        <div className="max-w-6xl mx-auto">
+      <section className="pt-14 px-6 md:px-12 lg:px-16">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6 flex-wrap">
+          <span className="eyebrow" style={{ color: "rgba(44,40,37,0.5)" }}>Libraries</span>
           <IconLinks links={VISUAL_LINKS} />
         </div>
       </section>
 
-      {/* Videos */}
-      <section className="py-16 px-6 md:px-16">
+      {/* Film */}
+      <section className="py-20 md:py-24 px-6 md:px-12 lg:px-16">
         <SectionReveal>
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <p className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: "rgba(44,40,37,0.3)" }}>Latest Video</p>
-              <a href={ONEDRIVE_VIDEOS} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-medium transition-opacity duration-200 hover:opacity-70"
-                style={{ color: "#1B2A4A" }}>
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                  <path d="M19.363 10.72A5.622 5.622 0 0 0 14.4 7.2a5.634 5.634 0 0 0-4.938 2.934A4.324 4.324 0 0 0 5.4 14.4a4.326 4.326 0 0 0 4.32 4.32h9.12a3.36 3.36 0 0 0 .523-6.72v.72zM18.84 17.28H9.72a2.88 2.88 0 1 1 .36-5.748l.744.096.312-.672a4.2 4.2 0 0 1 3.264-2.376 4.176 4.176 0 0 1 4.308 2.94l.252.756.804.048a1.92 1.92 0 0 1-.924 3.612v-.656z"/>
-                </svg>
-                Full video library ↗
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-end justify-between mb-10 gap-6">
+              <h2 className="font-serif leading-none" style={{ color: "#1A1716", fontSize: "clamp(2rem, 3.4vw, 2.75rem)", fontWeight: 400 }}>Film</h2>
+              <a href={ONEDRIVE_VIDEOS} target="_blank" rel="noopener noreferrer" className="eyebrow link-underline whitespace-nowrap" style={{ color: "#1B2A4A" }}>
+                Full video library
               </a>
             </div>
-            <VideoGrid videos={videos} previewCount={2} accentColor="#1B2A4A" sectionLabel="Visual" />
+            <VideoGrid videos={videos} previewCount={2} sectionLabel="Visual" />
           </div>
         </SectionReveal>
       </section>
 
-      <div className="px-6 md:px-16"><div className="max-w-6xl mx-auto h-px" style={{ background: "rgba(27,42,74,0.07)" }} /></div>
+      <div className="px-6 md:px-12 lg:px-16"><div className="max-w-7xl mx-auto hairline" /></div>
 
       {/* Photography */}
-      <section className="py-16 pb-28 px-6 md:px-16">
+      <section className="py-20 md:py-24 pb-32 px-6 md:px-12 lg:px-16">
         <SectionReveal>
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-8">
-              <p className="text-xs font-bold tracking-[0.2em] uppercase" style={{ color: "rgba(44,40,37,0.3)" }}>Photography</p>
-              <a href={ONEDRIVE_PHOTOS} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-xs font-medium transition-opacity duration-200 hover:opacity-70"
-                style={{ color: "#1B2A4A" }}>
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                  <path d="M19.363 10.72A5.622 5.622 0 0 0 14.4 7.2a5.634 5.634 0 0 0-4.938 2.934A4.324 4.324 0 0 0 5.4 14.4a4.326 4.326 0 0 0 4.32 4.32h9.12a3.36 3.36 0 0 0 .523-6.72v.72zM18.84 17.28H9.72a2.88 2.88 0 1 1 .36-5.748l.744.096.312-.672a4.2 4.2 0 0 1 3.264-2.376 4.176 4.176 0 0 1 4.308 2.94l.252.756.804.048a1.92 1.92 0 0 1-.924 3.612v-.656z"/>
-                </svg>
-                Full photo library ↗
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-end justify-between mb-10 gap-6">
+              <h2 className="font-serif leading-none" style={{ color: "#1A1716", fontSize: "clamp(2rem, 3.4vw, 2.75rem)", fontWeight: 400 }}>Photography</h2>
+              <a href={ONEDRIVE_PHOTOS} target="_blank" rel="noopener noreferrer" className="eyebrow link-underline whitespace-nowrap" style={{ color: "#1B2A4A" }}>
+                Full photo library
               </a>
             </div>
             <GalleryGrid images={allPhotos} previewCount={4} />

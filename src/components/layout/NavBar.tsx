@@ -4,72 +4,70 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/data";
 
+const LINKS = NAV_LINKS.filter((l) => l.href !== "/");
+
+function NavLink({ href, label, active }: { href: string; label: string; active: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={`eyebrow link-underline whitespace-nowrap transition-colors duration-300 ${active ? "is-active" : ""}`}
+      style={{ color: active ? "#1B2A4A" : "rgba(44,40,37,0.6)", fontSize: "10.5px" }}
+    >
+      {label}
+    </Link>
+  );
+}
+
 export default function NavBar() {
   const pathname = usePathname();
 
   return (
-    <nav
-      className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 sm:gap-4 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full"
+    <header
+      className="fixed top-0 left-0 right-0 z-50 h-16"
       style={{
-        background: "rgba(250,249,246,0.88)",
-        backdropFilter: "blur(24px)",
-        WebkitBackdropFilter: "blur(24px)",
-        border: "1px solid rgba(27,42,74,0.12)",
-        boxShadow: "0 8px 32px rgba(27,42,74,0.12)",
-        maxWidth: "calc(100vw - 24px)",
+        background: "rgba(250,249,246,0.94)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(27,42,74,0.12)",
       }}
     >
-      {/* SP Monogram */}
-      <Link href="/" className="flex-shrink-0">
-        <div
-          className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm"
-          style={{
-            background: "#1A1716",
-            border: "1px solid #1A1716",
-            color: "#FAF9F6",
-            fontFamily: "cursive",
-            fontStyle: "italic",
-          }}
-        >
-          SP
+      {/* Desktop: links left · monogram center · contact right */}
+      <nav className="hidden md:grid h-full max-w-7xl mx-auto px-8 lg:px-12 grid-cols-3 items-center">
+        <div className="flex items-center gap-8">
+          {LINKS.map((l) => (
+            <NavLink key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
+          ))}
         </div>
-      </Link>
 
-      <div className="w-px h-4 sm:h-5 flex-shrink-0" style={{ background: "rgba(27,42,74,0.1)" }} />
+        <div className="flex justify-center">
+          <Link href="/" aria-label="Home" className="font-serif" style={{ color: "#1B2A4A", fontSize: "26px", letterSpacing: "0.28em", fontWeight: 400, paddingLeft: "0.28em" }}>
+            SP
+          </Link>
+        </div>
 
-      <div className="flex items-center gap-0.5 sm:gap-1">
-        {NAV_LINKS.filter(l => l.href !== "/").map((link) => {
-          const active = pathname === link.href;
-          return (
+        <div className="flex justify-end">
+          <NavLink href="/contact" label="Contact" active={pathname === "/contact"} />
+        </div>
+      </nav>
+
+      {/* Mobile: monogram left · links right */}
+      <nav className="md:hidden h-full px-4 flex items-center justify-between gap-3">
+        <Link href="/" aria-label="Home" className="font-serif flex-shrink-0" style={{ color: "#1B2A4A", fontSize: "22px", letterSpacing: "0.24em", paddingLeft: "0.24em" }}>
+          SP
+        </Link>
+        <div className="flex items-center gap-3">
+          {[...LINKS, { href: "/contact", label: "Contact" }].map((l) => (
             <Link
-              key={link.href}
-              href={link.href}
-              className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap"
-              style={{
-                color: active ? "#1B2A4A" : "rgba(44,40,37,0.45)",
-                background: active ? "rgba(27,42,74,0.08)" : "transparent",
-                fontWeight: active ? 700 : 500,
-              }}
+              key={l.href}
+              href={l.href}
+              className={`eyebrow link-underline whitespace-nowrap ${pathname === l.href ? "is-active" : ""}`}
+              style={{ color: pathname === l.href ? "#1B2A4A" : "rgba(44,40,37,0.6)", fontSize: "9.5px", letterSpacing: "0.16em" }}
             >
-              {link.label}
+              {l.label}
             </Link>
-          );
-        })}
-      </div>
-
-      <div className="w-px h-4 sm:h-5 flex-shrink-0" style={{ background: "rgba(27,42,74,0.1)" }} />
-
-      <Link
-        href="/contact"
-        className="flex-shrink-0 px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap"
-        style={{
-          background: pathname === "/contact" ? "#1B2A4A" : "transparent",
-          border: `1px solid ${pathname === "/contact" ? "#1B2A4A" : "rgba(27,42,74,0.25)"}`,
-          color: pathname === "/contact" ? "#FAF9F6" : "#1B2A4A",
-        }}
-      >
-        Contact
-      </Link>
-    </nav>
+          ))}
+        </div>
+      </nav>
+    </header>
   );
 }

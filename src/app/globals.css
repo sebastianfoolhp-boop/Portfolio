@@ -1,20 +1,75 @@
 @import "tailwindcss";
+
 @theme {
-  --color-base: #FAF9F6;
-  --color-base-50: #F2F0EB;
-  --color-base-100: #E8E4DC;
+  --color-cream: #FAF9F6;
+  --color-cream-50: #F2F0EB;
+  --color-cream-100: #E8E4DC;
   --color-navy: #1B2A4A;
   --color-navy-dim: #243659;
-  --color-dark: #1A1716;
+  --color-hunter: #1F3D2B;
+  --color-burgundy: #5C2A2E;
+  --color-ink: #1A1716;
+  --color-text: #2C2825;
   --font-sans: Arial, Helvetica, sans-serif;
-  --radius-3xl: 1.5rem;
-  --radius-4xl: 2rem;
-  --shadow-card: 0 1px 16px rgba(27,42,74,0.08);
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, "Times New Roman", serif;
 }
+
 html { scroll-behavior: smooth; }
-body { background-color: #FAF9F6; color: #2C2825; font-family: Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+
+body {
+  background-color: #FAF9F6;
+  color: #2C2825;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Small-caps editorial label */
+.eyebrow {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Hairline divider */
+.hairline { height: 1px; background: rgba(27,42,74,0.14); }
+.hairline-light { height: 1px; background: rgba(250,249,246,0.14); }
+
+/* Underline that slides in from the left on hover */
+.link-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after,
+.group:hover .link-underline::after,
+.link-underline.is-active::after {
+  transform: scaleX(1);
+}
+
+/* Slow editorial image zoom */
+.img-zoom { overflow: hidden; }
+.img-zoom img, .img-zoom video {
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.img-zoom:hover img, .img-zoom:hover video { transform: scale(1.04); }
+
 ::selection { background: rgba(27,42,74,0.15); }
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #FAF9F6; }
-::-webkit-scrollbar-thumb { background: rgba(27,42,74,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: rgba(27,42,74,0.2); }
 ::-webkit-scrollbar-thumb:hover { background: rgba(27,42,74,0.4); }
