@@ -36,7 +36,7 @@ export default async function AudioPage() {
       <PageHero
         title="Audio"
         subtitle="DJ sets, mixes, and live sessions"
-        colorGradient="radial-gradient(ellipse at 30% 60%, rgba(92,42,46,0.75) 0%, rgba(27,42,74,0.35) 50%, transparent 75%)"
+        videoSrc="/images/audio-hero.mp4"
       />
 
       {/* Socials */}

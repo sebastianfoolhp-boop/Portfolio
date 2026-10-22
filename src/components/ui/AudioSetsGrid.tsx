@@ -42,7 +42,6 @@ export default function AudioSetsGrid({ sets }: { sets: AudioSet[] }) {
               </div>
             ) : (
               <>
-                <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 30% 20%, rgba(92,42,46,0.35) 0%, transparent 60%)" }} />
                 <div className="absolute inset-0 flex flex-col justify-end p-6">
                   <span className="eyebrow" style={{ color: "rgba(250,249,246,0.55)" }}>{set.sublabel}</span>
                   <span className="font-serif text-white mt-2 leading-tight" style={{ fontSize: "clamp(1.5rem, 2.2vw, 1.9rem)", fontWeight: 400 }}>{set.label}</span>

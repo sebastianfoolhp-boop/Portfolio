@@ -20,10 +20,6 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative flex flex-col items-center justify-center overflow-hidden"
         style={{ height: "calc(100vh - 64px)", minHeight: "640px", background: "#1A1716" }}>
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 20% 55%, rgba(92,42,46,0.45) 0%, transparent 50%)" }} />
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 80% 30%, rgba(27,42,74,0.6) 0%, transparent 50%)" }} />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,9,8,0.9) 0%, rgba(10,9,8,0.1) 45%, transparent 75%)" }} />
-
         <div className="relative z-10 flex flex-col items-center text-center px-6">
           <motion.h1
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease }}
@@ -93,13 +89,6 @@ export default function HomePage() {
             {HOME_TEASERS.map((teaser, i) => (
               <SectionReveal key={teaser.href} delay={i * 0.1}>
                 <Link href={teaser.href} className="group relative block aspect-[4/5] overflow-hidden img-zoom" style={{ background: "#1A1716" }}>
-                  <div className="absolute inset-0 transition-opacity duration-700 group-hover:opacity-100 opacity-70"
-                    style={{ background: i === 0
-                      ? "radial-gradient(ellipse at 30% 30%, rgba(92,42,46,0.5) 0%, transparent 60%)"
-                      : i === 1
-                      ? "radial-gradient(ellipse at 70% 30%, rgba(27,42,74,0.7) 0%, transparent 60%)"
-                      : "radial-gradient(ellipse at 50% 20%, rgba(31,61,43,0.6) 0%, transparent 60%)" }} />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,9,8,0.85) 0%, transparent 55%)" }} />
                   <div className="absolute bottom-0 left-0 p-8">
                     <span className="eyebrow block" style={{ color: "rgba(250,249,246,0.55)" }}>Discover</span>
                     <span className="font-serif text-white block mt-3 leading-none" style={{ fontSize: "clamp(2.2rem, 3.4vw, 3rem)", fontWeight: 400 }}>

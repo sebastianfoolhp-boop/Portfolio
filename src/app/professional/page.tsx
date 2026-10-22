@@ -21,9 +21,6 @@ export default function ProfessionalPage() {
     <main style={{ background: "#FAF9F6" }}>
       {/* Hero */}
       <section className="relative flex items-center overflow-hidden" style={{ background: "#1A1716", minHeight: "calc(100vh - 64px)" }}>
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 25% 40%, rgba(27,42,74,0.7) 0%, transparent 60%)" }} />
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 85% 85%, rgba(31,61,43,0.4) 0%, transparent 50%)" }} />
-
         <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-16 py-20 md:py-24">
           <div className="grid md:grid-cols-12 gap-12 lg:gap-20 items-center">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease }} className="md:col-span-7">

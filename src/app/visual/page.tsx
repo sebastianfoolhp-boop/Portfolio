@@ -44,7 +44,7 @@ export default async function VisualPage() {
       <PageHero
         title="Visual"
         subtitle="Photography and cinematography"
-        colorGradient="radial-gradient(ellipse at 65% 40%, rgba(27,42,74,0.85) 0%, rgba(31,61,43,0.4) 50%, transparent 75%)"
+        videoSrc="/images/visual-hero.mp4"
       />
 
       <section className="pt-14 px-6 md:px-12 lg:px-16">

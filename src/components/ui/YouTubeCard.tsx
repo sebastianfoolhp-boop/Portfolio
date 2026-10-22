@@ -21,7 +21,7 @@ export default function YouTubeCard({ videoId, title, label }: YouTubeCardProps)
         alt={title}
         className="w-full h-full object-cover"
       />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,9,8,0.85) 0%, rgba(10,9,8,0.15) 50%, transparent 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "rgba(10,9,8,0.45)" }} />
 
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:scale-110"

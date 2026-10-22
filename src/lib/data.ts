@@ -199,7 +199,7 @@ export const CONTACT_LINKS = [
   {
     icon: "instagram",
     label: "Instagram",
-    description: "Photos, sets, and everything in between",
+    description: "Connect with me personally",
     href: "https://www.instagram.com/sxbxssp/",
   },
   {
