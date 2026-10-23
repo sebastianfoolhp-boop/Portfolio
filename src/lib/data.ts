@@ -129,7 +129,7 @@ export const EXPERIENCE = [
     period: "Summer 2026",
     org: "JPMorgan Chase",
     role: "Previous JPMorgan Commercial Banking Summer Analyst",
-    detail: "Commercial Banking intern training program.",
+    detail: "Credit and treasury analysis training.",
   },
   {
     period: "University of Florida",
