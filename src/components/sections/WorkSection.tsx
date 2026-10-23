@@ -1,11 +1,14 @@
 import SectionReveal from "@/components/ui/SectionReveal";
-import Card, { CardArrow } from "@/components/ui/Card";
+import Card, { CardArrow, type Tone } from "@/components/ui/Card";
 import IconLinks from "@/components/ui/IconLinks";
 import SectionHeader from "./SectionHeader";
 import { WORK_HERO, WORK_NARRATIVE, WORK_CARDS, EXPERIENCE } from "@/lib/data";
 
 // Color is used sparingly here: mostly charcoal, with a few accents.
 const EXPERIENCE_DOTS = ["bg-pop-purple", "bg-pop-cobalt", "bg-pop-lime"];  // order of EXPERIENCE
+
+// Colored background cards by title; the rest stay charcoal.
+const BG_TONES: Record<string, Tone> = { "Case Competitions": "lime", Leadership: "cobalt" };
 
 const subTitleSize = { fontSize: "clamp(2.25rem, 5vw, 4rem)" };
 
@@ -85,9 +88,9 @@ export default function WorkSection() {
             <h3 className="display text-ink" style={subTitleSize}>Background</h3>
             <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
               {WORK_CARDS.map((card) => (
-                <Card key={card.title} tone={card.title === "Case Competitions" ? "lime" : "charcoal"} className="h-full min-h-[13rem] p-7 md:p-9">
-                  <span className="eyebrow" style={card.title === "Case Competitions" ? undefined : { color: "var(--color-ink)" }}>{card.title}</span>
-                  <p className="mt-6 text-xl font-bold leading-snug md:text-2xl" style={card.title === "Case Competitions" ? undefined : { color: "var(--color-ink)" }}>{card.body}</p>
+                <Card key={card.title} tone={BG_TONES[card.title] ?? "charcoal"} className="h-full min-h-[13rem] p-7 md:p-9">
+                  <span className="eyebrow" style={BG_TONES[card.title] ? undefined : { color: "var(--color-ink)" }}>{card.title}</span>
+                  <p className="mt-6 text-xl font-bold leading-snug md:text-2xl" style={BG_TONES[card.title] ? undefined : { color: "var(--color-ink)" }}>{card.body}</p>
                 </Card>
               ))}
             </div>
