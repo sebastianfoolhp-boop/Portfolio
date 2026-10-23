@@ -63,8 +63,7 @@ export default function WorkSection() {
         {/* At a glance */}
         <SectionReveal>
           <div className="mt-28 md:mt-40">
-            <span className="eyebrow">At a glance</span>
-            <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
               {WORK_STATS.map((stat, i) => (
                 <Card key={stat.label} tone={STAT_TONES[i] ?? "charcoal"} className="min-h-[11rem] p-6 md:p-7">
                   <p className="display" style={{ fontSize: "clamp(1.9rem, 3.2vw, 2.9rem)" }}>{stat.value}</p>

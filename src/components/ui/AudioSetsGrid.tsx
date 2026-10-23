@@ -88,8 +88,8 @@ export default function AudioSetsGrid({ sets }: { sets: AudioSet[] }) {
         } else if (look) {
           // A mix with an embed instead of a link: a plain colored card.
           card = (
-            <Card tone={look.tone} decor={look.decor} className="h-full">
-              <div className="flex h-full min-h-[15rem] flex-col justify-between p-6 md:min-h-[17rem] md:p-8">
+            <Card tone={look.tone} decor={look.decor} className="aspect-[4/5] w-full">
+              <div className="flex h-full flex-col justify-between p-6 md:p-8">
                 <span className="eyebrow">{set.label || "Mix"}</span>
                 <h4 className="display" style={{ fontSize: "clamp(2rem, 3.4vw, 3.1rem)" }}>{set.sublabel || set.label}</h4>
               </div>
@@ -97,8 +97,8 @@ export default function AudioSetsGrid({ sets }: { sets: AudioSet[] }) {
           );
         } else {
           card = (
-            <Card tone="outline" hover={false} className="h-full">
-              <div className="flex h-full min-h-[15rem] flex-col justify-between p-6 md:min-h-[17rem] md:p-8">
+            <Card tone="outline" hover={false} className="aspect-[4/5] w-full">
+              <div className="flex h-full flex-col justify-between p-6 md:p-8">
                 <span className="eyebrow">{String(i + 1).padStart(2, "0")}</span>
                 <span className="text-xl font-bold text-ink-3">Coming soon</span>
               </div>
@@ -107,8 +107,8 @@ export default function AudioSetsGrid({ sets }: { sets: AudioSet[] }) {
         }
 
         return (
-          // The middle column sits a little lower on wide screens, for an editorial stagger
-          <SectionReveal key={set.id} delay={i * 0.06} className={i % 3 === 1 ? "lg:mt-10" : ""}>
+          // Every cell is the same size and sits on the same line
+          <SectionReveal key={set.id} delay={i * 0.06} className="h-full">
             {card}
           </SectionReveal>
         );
