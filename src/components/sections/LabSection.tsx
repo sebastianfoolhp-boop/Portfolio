@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { PenLine, BookOpen, FlaskConical, Clapperboard, Lightbulb, Feather, type LucideIcon } from "lucide-react";
+import { PenLine, BookOpen, Clapperboard, Feather, type LucideIcon } from "lucide-react";
 import SectionReveal from "@/components/ui/SectionReveal";
 import Card, { type Tone } from "@/components/ui/Card";
 import type { DecorKind } from "@/components/ui/Decor";
@@ -22,15 +22,13 @@ interface Look {
 }
 
 const LOOKS: Look[] = [
-  { tone: "sun",    span: "md:col-span-5",                offset: "",           tilt: "-1.4deg", decor: "lines",  icon: PenLine,      minH: "min-h-[19rem]" },
-  { tone: "purple", span: "md:col-span-7",                offset: "md:mt-14",   tilt: "0.9deg",  decor: "rings",  icon: BookOpen,     minH: "min-h-[19rem]" },
-  { tone: "lime",   span: "md:col-span-4",                offset: "md:-mt-2",   tilt: "1.2deg",  decor: "burst",  icon: FlaskConical, minH: "min-h-[17rem]" },
-  { tone: "orange", span: "md:col-span-4",                offset: "md:mt-12",   tilt: "-0.8deg", decor: "arcs",   icon: Clapperboard, minH: "min-h-[17rem]" },
-  { tone: "cobalt", span: "md:col-span-4",                offset: "md:mt-3",    tilt: "1.5deg",  decor: "dots",   icon: Lightbulb,    minH: "min-h-[17rem]" },
-  { tone: "outline",span: "md:col-span-8 md:col-start-3", offset: "md:mt-4",    tilt: "-0.6deg", decor: "lines",  icon: Feather,      minH: "min-h-[12rem]" },
+  { tone: "sun",     span: "md:col-span-5", offset: "",         tilt: "-1.4deg", decor: "lines", icon: PenLine,      minH: "min-h-[19rem]" }, // Sketches
+  { tone: "purple",  span: "md:col-span-7", offset: "md:mt-14", tilt: "0.9deg",  decor: "rings", icon: BookOpen,     minH: "min-h-[19rem]" }, // Book reflections
+  { tone: "orange",  span: "md:col-span-6", offset: "md:mt-2",  tilt: "-0.8deg", decor: "arcs",  icon: Clapperboard, minH: "min-h-[17rem]" }, // Behind the scenes
+  { tone: "outline", span: "md:col-span-6", offset: "md:mt-12", tilt: "1deg",    decor: "lines", icon: Feather,      minH: "min-h-[17rem]" }, // Personal writing
 ];
 
-const FALLBACK: Look = { tone: "charcoal", span: "md:col-span-4", offset: "", tilt: "0deg", decor: "dots", icon: Lightbulb, minH: "min-h-[14rem]" };
+const FALLBACK: Look = { tone: "charcoal", span: "md:col-span-4", offset: "", tilt: "0deg", decor: "dots", icon: Feather, minH: "min-h-[14rem]" };
 
 export default function LabSection() {
   return (

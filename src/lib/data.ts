@@ -2,6 +2,9 @@
 // SITE DATA — edit content here, never in the page components
 // ============================================================
 
+import tiktokVideos from "./tiktok-videos.json";
+import type { TikTokVideo } from "./tiktok";
+
 // -----------------------------------------------------------
 // Sections: the single source of truth for the page order and anchors.
 // The whole site is one scrolling page. Each entry here is a section whose
@@ -33,7 +36,7 @@ export const HOME_INTRO = {
     { text: "(tian)", tone: "muted" },
     { text: ".", tone: "base" },
   ],
-  sentence: "A collection of what I create, what I do and everything I'm curious about.",
+  sentence: "Here is a collection of what I create, what I do and everything I'm curious about.",
 };
 
 export const HOME_ABOUT = {
@@ -51,15 +54,10 @@ export const LAB = {
   items: [
     "Sketches",
     "Book reflections",
-    "Creative experiments",
     "Behind the scenes",
-    "Unfinished ideas",
     "Personal writing",
   ],
 };
-
-// Music section: topics that are waiting for real content. Edit this list to rename or add cards.
-export const MUSIC_TOPICS = ["Performances", "Production", "Tracks"];
 
 // Social platforms, used by the Music and Contact sections. Replace placeholder links with your own.
 export const SOCIAL_LINKS = [
@@ -72,14 +70,17 @@ export const SOCIAL_LINKS = [
 // -----------------------------------------------------------
 // Audio / Music page
 // -----------------------------------------------------------
-export const AUDIO_SETS = [
-  { id: 1, label: "Short Mix - TikTok", sublabel: "Tech House", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628510053397450015?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 2, label: "Short Mix - TikTok", sublabel: "Pop/Rap", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628509507957673246?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 3, label: "Short Mix - TikTok", sublabel: "Phonk Tech House", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7628508511298702622?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 4, label: "Short Mix - TikTok", sublabel: "House", duration: "", href: "https://www.tiktok.com/@sebxsjairo/video/7626649668910337311?is_from_webapp=1&sender_device=pc&web_id=7656645709009405471", isTikTok: true },
-  { id: 5, label: "", sublabel: "", duration: "", href: "", isTikTok: false },
-  { id: 6, label: "", sublabel: "", duration: "", href: "", isTikTok: false },
-];
+// The TikTok mixes come from src/lib/tiktok-videos.json. To add one, add a line there with the video's
+// link and its genre, then run `npm run tiktok:thumbs` (or just deploy: the cover image is fetched
+// automatically at build time). Each entry here becomes one card in the Music section.
+export const AUDIO_SETS = (tiktokVideos as TikTokVideo[]).map((v, i) => ({
+  id: i + 1,
+  label: "Short Mix - TikTok",
+  sublabel: v.genre,
+  duration: "",
+  href: v.url,
+  isTikTok: true,
+}));
 
 export const AUDIO_GEAR = [
   { name: "Denon Prime 2", category: "Controller" },
@@ -98,12 +99,8 @@ export const AUDIO_EMBEDS: string[] = [];
 export const GALLERY_IMAGES = [
   { id: 1, src: "", alt: "Photo placeholder 01", category: "Photography", aspect: "landscape" },
   { id: 2, src: "", alt: "Photo placeholder 02", category: "Photography", aspect: "portrait" },
-  { id: 3, src: "", alt: "Photo placeholder 03", category: "Cinematography", aspect: "landscape" },
   { id: 4, src: "", alt: "Photo placeholder 04", category: "Photography", aspect: "portrait" },
   { id: 5, src: "", alt: "Photo placeholder 05", category: "Photography", aspect: "landscape" },
-  { id: 6, src: "", alt: "Photo placeholder 06", category: "Cinematography", aspect: "landscape" },
-  { id: 7, src: "", alt: "Photo placeholder 07", category: "Photography", aspect: "portrait" },
-  { id: 8, src: "", alt: "Photo placeholder 08", category: "Photography", aspect: "landscape" },
 ];
 
 // Paste real YouTube/Vimeo embed URLs here later

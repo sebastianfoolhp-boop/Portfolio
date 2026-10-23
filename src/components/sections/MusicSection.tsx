@@ -5,8 +5,9 @@ import AudioSetsGrid from "@/components/ui/AudioSetsGrid";
 import IconLinks from "@/components/ui/IconLinks";
 import Card, { CardArrow } from "@/components/ui/Card";
 import { sectionNumber } from "./SectionHeader";
-import { AUDIO_SETS, AUDIO_YOUTUBE, MUSIC_TOPICS, SOCIAL_LINKS } from "@/lib/data";
+import { AUDIO_SETS, AUDIO_YOUTUBE, SOCIAL_LINKS } from "@/lib/data";
 import { getAudioSets, getYouTubeVideos } from "@/sanity/lib/queries";
+import { getTikTokThumb } from "@/lib/tiktok";
 
 const subTitle = "display text-ink";
 const subTitleSize = { fontSize: "clamp(2.25rem, 5vw, 4rem)" };
@@ -20,7 +21,7 @@ export default async function MusicSection() {
 
   const sets = sanitySets.length > 0
     ? sanitySets.map((s) => ({ id: s._id, label: s.label, sublabel: s.sublabel ?? "", duration: s.duration ?? "", embedCode: s.embedCode, href: undefined, isTikTok: false }))
-    : AUDIO_SETS.map((s) => ({ ...s, id: String(s.id), embedCode: undefined }));
+    : AUDIO_SETS.map((s) => ({ ...s, id: String(s.id), embedCode: undefined, thumb: getTikTokThumb(s.href) }));
 
   const videos = sanityVideos.length > 0
     ? sanityVideos.map((v) => ({ title: v.title, videoId: v.videoId, label: v.label }))
@@ -68,35 +69,18 @@ export default async function MusicSection() {
             </div>
           </SectionReveal>
 
-          {/* Topics waiting for real content */}
-          <SectionReveal>
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3 md:mt-14 md:gap-5">
-              {MUSIC_TOPICS.map((topic, i) => (
-                <Card key={topic} tone="outline" hover={false} className="min-h-[9rem] p-6">
-                  <span className="eyebrow">{String(i + 1).padStart(2, "0")}</span>
-                  <h4 className="mt-6 text-2xl font-extrabold tracking-tight">{topic}</h4>
-                  <span className="mt-2 text-sm font-bold text-ink-3">Coming soon</span>
-                </Card>
-              ))}
-            </div>
-          </SectionReveal>
-
-          {/* Listen */}
-          <SectionReveal>
-            <div className="pb-32 pt-20 md:pb-40 md:pt-28">
-              <span className="eyebrow">Listen</span>
-              <Card tone="charcoal" hover={false} className="mt-8 p-6 md:p-8">
-                {embedSet?.embedCode ? (
+          {/* Listen: only appears once a SoundCloud or Spotify embed is added in Sanity */}
+          {embedSet?.embedCode ? (
+            <SectionReveal>
+              <div className="pt-20 md:pt-28">
+                <span className="eyebrow">Listen</span>
+                <Card tone="charcoal" hover={false} className="mt-8 p-6 md:p-8">
                   <div dangerouslySetInnerHTML={{ __html: embedSet.embedCode }} />
-                ) : (
-                  <div className="flex h-28 flex-col items-center justify-center gap-2">
-                    <span className="eyebrow" style={{ color: "var(--color-ink-3)" }}>Coming Soon</span>
-                    <span className="text-lg font-bold text-ink-3">Full-length mixes</span>
-                  </div>
-                )}
-              </Card>
-            </div>
-          </SectionReveal>
+                </Card>
+              </div>
+            </SectionReveal>
+          ) : null}
+          <div className="pb-32 md:pb-40" />
         </div>
       </div>
     </section>

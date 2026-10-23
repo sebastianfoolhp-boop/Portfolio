@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "tiktok:thumbs": "node scripts/tiktok-thumbs.mjs",
+    "build": "node scripts/tiktok-thumbs.mjs --quiet && next build",
     "start": "next start",
     "lint": "eslint"
   },

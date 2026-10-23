@@ -19,6 +19,9 @@ const TONES: Record<Tone, string> = {
   sun: "card-colored bg-pop-sun text-black",
 };
 
+/** The color classes for a tone, for small colored plates that sit on top of photos. */
+export const toneClass = (tone: Tone) => TONES[tone];
+
 interface CardProps {
   tone?: Tone;
   /** Makes the whole card a link. */
