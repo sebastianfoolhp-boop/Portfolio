@@ -65,8 +65,8 @@ const J7 = P(558, 1163);  // collar
 
 // ---- Where cracks leave the picture (on its border) ---------
 const TOPb = P(800, 0);
-const Lb1 = P(0, 204), Lb2 = P(0, 436), Lb3 = P(0, 1252);
-const Rb1 = P(1086, 775), Rb2 = P(1086, 960), Rb3 = P(1086, 1000);
+const Lb1 = P(0, 204), Lb2 = P(0, 436);
+const Rb1 = P(1086, 775), Rb2 = P(1086, 960);
 const Bb = P(685, 1448);
 
 // ---- Corners ------------------------------------------------
@@ -83,9 +83,7 @@ const E3 = line([700, 880], [765, 935]);                                        
 const E_ = line([295, 600], [340, 625], [395, 655], [440, 690], [445, 705], [435, 730], [400, 780], [350, 830]); // left edge -> J5
 const F = line([350, 885], [385, 935], [420, 980]);                                             // J5 -> J4
 const G = line([462, 1040], [450, 1070]);                                                       // J4 -> J6
-const H = line([420, 1100], [380, 1130], [330, 1150], [265, 1170]);                             // J6 -> left edge
 const I = line([500, 1115], [530, 1150]);                                                       // J6 -> J7
-const Jj = line([610, 1148], [660, 1115], [720, 1080], [795, 1052]);                            // J7 -> right edge
 const K_ = line([575, 1195], [600, 1240], [625, 1285], [655, 1345], [675, 1405]);               // J7 -> bottom edge
 
 const rev = (p: Pt[]) => [...p].reverse();
@@ -103,11 +101,11 @@ interface ShardSpec {
   depth: number;
 }
 
-// Eight pieces, as many as the cracks in the picture make. Which piece opens which section:
+// Six pieces, one per section. Which piece opens which section:
 //   top left -> About            top right -> Music
-//   centre of face -> Cinema     right cheek -> Work
-//   left cheek and neck, and the lower left -> The Lab
-//   right jaw and neck, and the lower right -> Contact
+//   centre of the face -> Cinema right cheek -> Work
+//   left cheek, neck and lower left -> The Lab
+//   right jaw, neck and lower right -> Contact
 // To re-map a piece, change its `section` to any key from SECTIONS in lib/data.ts.
 const SPECS: ShardSpec[] = [
   { id: "p-about",    section: "about",   label: labelOf("about"),   rotate: -2.5, depth:  0.015,
@@ -119,13 +117,9 @@ const SPECS: ShardSpec[] = [
   { id: "p-work",     section: "work",    label: labelOf("work"),    rotate: -1.8, depth:  0.02,
     points: [J2, ...C2, Rb1, Rb2, ...rev(E3), J3, ...rev(D1)] },
   { id: "p-lab",      section: "lab",     label: labelOf("lab"),     rotate: -1.6, depth: -0.01,
-    points: [Lb2, ...E_, J5, ...F, J4, ...G, J6, ...H, Lb3] },
-  { id: "p-lab-low",  section: "lab",     label: labelOf("lab"),     rotate: -1.2, depth:  0.01,
-    points: [Lb3, ...rev(H), J6, ...I, J7, ...K_, Bb, C01] },
-  { id: "p-contact",  section: "contact", label: labelOf("contact"), rotate:  2.0, depth:  0.012,
-    points: [J3, ...E3, Rb2, Rb3, ...rev(Jj), J7, ...rev(I), J6, ...rev(G), J4, ...rev(D2)] },
-  { id: "p-contact-low", section: "contact", label: labelOf("contact"), rotate: 2.4, depth: -0.01,
-    points: [J7, ...Jj, Rb3, C11, Bb, ...rev(K_)] },
+    points: [Lb2, ...E_, J5, ...F, J4, ...G, J6, ...I, J7, ...K_, Bb, C01] },
+  { id: "p-contact",  section: "contact", label: labelOf("contact"), rotate:  2.2, depth:  0.012,
+    points: [J3, ...E3, Rb2, C11, Bb, ...rev(K_), J7, ...rev(I), J6, ...rev(G), J4, ...rev(D2)] },
 ];
 
 export interface Shard extends ShardSpec {
