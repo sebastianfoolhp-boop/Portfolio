@@ -97,7 +97,7 @@ export default function WorkSection() {
         {/* Link on to Contact */}
         <SectionReveal>
           <div className="mx-auto mt-32 max-w-3xl text-center md:mt-44">
-            <h3 className="display text-ink" style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.5rem)" }}>Want to work <mark className="rounded-xl bg-pop-cobalt px-3 text-white" style={{ boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>together</mark>?</h3>
+            <h3 className="display text-ink" style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.5rem)" }}>Want to work <mark className="rounded-xl italic bg-pop-cobalt px-3 text-white" style={{ boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>together</mark>?</h3>
             <p className="mt-6 text-lg text-ink-2 md:text-xl">Reach out. Let&apos;s collaborate.</p>
             <a href="#contact" className="pill mt-10 border border-white/30 text-white">
               Get in touch <CardArrow className="h-4 w-4" />
