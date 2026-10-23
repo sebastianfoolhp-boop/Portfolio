@@ -48,7 +48,7 @@ export default async function MusicSection() {
                 <div className="md:col-span-8">
                   <VideoGrid videos={videos} previewCount={1} sectionLabel="Music" />
                 </div>
-                <Card tone="cobalt" decor="rings" href={YOUTUBE} external className="min-h-[14rem] p-7 md:col-span-4 md:p-9">
+                <Card tone="purple" decor="rings" href={YOUTUBE} external className="!bg-[#711776] min-h-[14rem] p-7 md:col-span-4 md:p-9">
                   <span className="eyebrow">YouTube</span>
                   <p className="display mt-10 md:mt-auto" style={{ fontSize: "clamp(2rem, 3.4vw, 3.1rem)" }}>Watch more sets</p>
                   <CardArrow className="mt-6 h-9 w-9" />
