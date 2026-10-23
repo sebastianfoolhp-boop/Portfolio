@@ -155,6 +155,73 @@ body {
 }
 
 @keyframes portrait-in { to { opacity: 1; } }
+
+/* Breathing: the whole portrait scales as ONE unit (the six pieces never move relative to each other).
+   It sits on its own wrapper, separate from the scroll and hover transforms on the pieces inside. */
+@keyframes portrait-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
+.portrait-breathe {
+  transform-origin: 50% 50%;
+  animation: portrait-breathe 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+/* Calm while a piece is hovered, and while the portrait is offscreen */
+.portrait-breathe[data-paused="true"] { animation-play-state: paused; }
+
+/* Custom circular cursor: only exists for a mouse over the portrait. Live = native cursor hidden. */
+.portrait-wrap.cursor-live, .portrait-wrap.cursor-live polygon { cursor: none !important; }
+.portrait-cursor {
+  position: fixed; left: 0; top: 0; z-index: 90;
+  pointer-events: none; opacity: 0;
+  transition: opacity 180ms ease;
+  will-change: transform;
+}
+.portrait-cursor[data-on="true"] { opacity: 1; }
+.portrait-cursor-ring {
+  position: absolute; left: 0; top: 0;
+  width: 40px; height: 40px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255,255,255,0.9);
+  border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  transition: width 240ms cubic-bezier(0.22,1,0.36,1), height 240ms cubic-bezier(0.22,1,0.36,1);
+}
+.portrait-cursor[data-label="true"] .portrait-cursor-ring { width: 72px; height: 72px; }
+.portrait-cursor-dot {
+  width: 4px; height: 4px; border-radius: 9999px; background: #fff;
+  transition: opacity 160ms ease;
+}
+.portrait-cursor[data-label="true"] .portrait-cursor-dot { opacity: 0; }
+.portrait-cursor-text {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  text-align: center; color: #fff; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.25;
+  opacity: 0; transition: opacity 160ms ease;
+}
+.portrait-cursor[data-label="true"] .portrait-cursor-text { opacity: 1; }
+
+/* Discovery hint: appears once after the headline is typed, then fades away. */
+@keyframes hint-life {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.explore-hint {
+  position: absolute; left: 0; right: 0; bottom: max(14px, 2.4svh);
+  text-align: center; pointer-events: none; z-index: 5;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.34em; text-transform: uppercase;
+  color: rgba(245,245,242,0.62);
+  opacity: 0;
+  animation: hint-life 4.2s ease-in-out forwards;
+}
+.explore-hint .hint-touch { display: none; }
+@media (hover: none), (pointer: coarse) {
+  .explore-hint .hint-mouse { display: none; }
+  .explore-hint .hint-touch { display: inline; }
+}
 @keyframes label-in {
   from { opacity: 0; transform: translateY(3px); }
   to { opacity: 1; transform: none; }
@@ -239,4 +306,6 @@ body {
   .link-underline::after { transition: none; }
   .caret-blink { animation: none; }
   .hero-portrait { animation: none; opacity: 1; }
+  .portrait-breathe { animation: none; will-change: auto; }
+  .portrait-cursor-ring, .portrait-cursor, .portrait-cursor-dot, .portrait-cursor-text { transition: none; }
 }

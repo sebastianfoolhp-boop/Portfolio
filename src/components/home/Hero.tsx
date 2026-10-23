@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import { useMotionValue, useScroll } from "framer-motion";
 import HomeIntro from "./HomeIntro";
 import ShatteredPortrait from "@/components/shatter/ShatteredPortrait";
@@ -16,6 +16,7 @@ import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
+  const [hint, setHint] = useState<"idle" | "show" | "gone">("idle");
 
   // 0 while the hero fills the screen, 1 once it has scrolled completely out of view.
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -28,13 +29,21 @@ export default function Hero() {
     <section id="home" ref={ref} aria-label="Home" className="hero" style={shape}>
       <div className="hero-grid">
         <div className="hero-text">
-          <HomeIntro />
+          <HomeIntro onTyped={() => setHint((h) => (h === "idle" ? "show" : h))} />
         </div>
         <div className="hero-portrait">
           <ShatteredPortrait progress={reduced ? still : scrollYProgress} reduced={reduced} />
         </div>
         <div aria-hidden className="hero-spacer" />
       </div>
+
+      {/* One-time hint, shown after the headline has been typed */}
+      {hint === "show" && (
+        <p aria-hidden className="explore-hint" onAnimationEnd={() => setHint("gone")}>
+          <span className="hint-mouse">Explore the pieces</span>
+          <span className="hint-touch">Tap to explore</span>
+        </p>
+      )}
     </section>
   );
 }

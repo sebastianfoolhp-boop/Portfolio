@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useTransform, useMotionTemplate, type MotionValue } from "framer-motion";
 import { SHARDS, SHATTER, VIEWBOX, VIEW, type Shard, type SectionKey } from "./shards";
 import { scrollToSection } from "@/lib/scrollToSection";
@@ -12,7 +13,7 @@ interface PieceProps {
   progress: MotionValue<number>;
   reduced: boolean;
   active: boolean;
-  onActivate: (id: SectionKey, el: SVGElement) => void;
+  onActivate: (id: SectionKey, el: SVGElement, via: "mouse" | "other") => void;
   onDeactivate: (id: SectionKey) => void;
   onSelect: (id: SectionKey) => void;
 }
@@ -76,14 +77,14 @@ function ShardPiece({ shard, progress, reduced, active, onActivate, onDeactivate
           aria-label={`Go to ${shard.label}`}
           data-shard-button={shard.id}
           style={{ cursor: "pointer", outline: "none", touchAction: "manipulation" }}
-          onPointerEnter={(e) => { if (e.pointerType === "mouse" || e.pointerType === "pen") onActivate(shard.id, e.currentTarget); }}
+          onPointerEnter={(e) => { if (e.pointerType === "mouse" || e.pointerType === "pen") onActivate(shard.id, e.currentTarget, "mouse"); }}
           onPointerLeave={(e) => { if (e.pointerType === "mouse" || e.pointerType === "pen") onDeactivate(shard.id); }}
           // Touch has no hover: show the name while the finger is down, then navigate on release.
-          onPointerDown={(e) => { if (e.pointerType === "touch") onActivate(shard.id, e.currentTarget); }}
+          onPointerDown={(e) => { if (e.pointerType === "touch") onActivate(shard.id, e.currentTarget, "other"); }}
           onPointerUp={(e) => { if (e.pointerType === "touch") onDeactivate(shard.id); }}
           onPointerCancel={() => onDeactivate(shard.id)}
           // Keyboard focus shows the same highlight as hover.
-          onFocus={(e) => { if (e.currentTarget.matches(":focus-visible")) onActivate(shard.id, e.currentTarget); }}
+          onFocus={(e) => { if (e.currentTarget.matches(":focus-visible")) onActivate(shard.id, e.currentTarget, "other"); }}
           onBlur={() => onDeactivate(shard.id)}
           onClick={() => onSelect(shard.id)}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(shard.id); } }}
@@ -103,14 +104,80 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
   const wrapRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<SectionKey | null>(null);
   const [labelPos, setLabelPos] = useState<{ x: number; y: number } | null>(null);
+  const [via, setVia] = useState<"mouse" | "other">("other");
+  const [finePointer, setFinePointer] = useState(false);
+  const [onScreen, setOnScreen] = useState(true);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const cursorOn = useRef(false);
+
+  // Custom cursor only for devices with a mouse-like pointer that can hover.
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const update = () => setFinePointer(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  // Pause breathing while the portrait is offscreen.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Cursor movement: written straight to the element's transform in an animation frame.
+  // No React state changes while the mouse moves.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap || !finePointer) return;
+    let raf = 0;
+    let px = 0, py = 0;
+    const paint = () => {
+      raf = 0;
+      const c = cursorRef.current;
+      if (c) c.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+    };
+    const show = (on: boolean) => {
+      if (cursorOn.current === on) return;
+      cursorOn.current = on;
+      cursorRef.current?.setAttribute("data-on", String(on));
+      wrap.classList.toggle("cursor-live", on);
+    };
+    const move = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      px = e.clientX; py = e.clientY;
+      if (!raf) raf = requestAnimationFrame(paint);
+      show(true);
+    };
+    const hide = () => show(false);
+    const onOut = (e: MouseEvent) => { if (!e.relatedTarget) hide(); };
+    wrap.addEventListener("pointermove", move);
+    wrap.addEventListener("pointerenter", move);
+    wrap.addEventListener("pointerleave", hide);
+    document.addEventListener("mouseout", onOut);
+    window.addEventListener("blur", hide);
+    return () => {
+      wrap.removeEventListener("pointermove", move);
+      wrap.removeEventListener("pointerenter", move);
+      wrap.removeEventListener("pointerleave", hide);
+      document.removeEventListener("mouseout", onOut);
+      window.removeEventListener("blur", hide);
+      if (raf) cancelAnimationFrame(raf);
+      wrap.classList.remove("cursor-live");
+    };
+  }, [finePointer]);
 
   // Place the label at the centre of the shard's actual on-screen rectangle.
-  const onActivate = useCallback((id: SectionKey, el: SVGElement) => {
+  const onActivate = useCallback((id: SectionKey, el: SVGElement, how: "mouse" | "other") => {
     const wrap = wrapRef.current;
     if (!wrap) return;
     const w = wrap.getBoundingClientRect();
     const s = el.getBoundingClientRect();
     setLabelPos({ x: s.left + s.width / 2 - w.left, y: s.top + s.height / 2 - w.top });
+    setVia(how);
     setActive(id);
   }, []);
   const onDeactivate = useCallback((id: SectionKey) => setActive((cur) => (cur === id ? null : cur)), []);
@@ -119,7 +186,9 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
   const activeShard = active ? SHARDS.find((s) => s.id === active) : undefined;
 
   return (
-    <div ref={wrapRef} className="absolute inset-0">
+    <div ref={wrapRef} className="portrait-wrap absolute inset-0">
+      {/* BREATHING layer: the whole portrait scales as one unit, outside the per-piece scroll and hover transforms. */}
+      <div className="portrait-breathe absolute inset-0" data-paused={String(!onScreen || active !== null)}>
       <svg
         viewBox={`${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`}
         preserveAspectRatio="xMidYMid meet"
@@ -162,9 +231,10 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
           />
         ))}
       </svg>
+      </div>
 
       {/* Section name over the hovered, pressed or focused piece */}
-      {activeShard && labelPos && (
+      {activeShard && labelPos && !(via === "mouse" && finePointer) && (
         <div
           className="pointer-events-none absolute"
           style={{ left: labelPos.x, top: labelPos.y, transform: "translate(-50%, -50%)" }}
@@ -184,6 +254,16 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
             {activeShard.label}
           </span>
         </div>
+      )}
+
+      {finePointer && createPortal(
+        <div ref={cursorRef} className="portrait-cursor" aria-hidden data-on="false" data-label={String(Boolean(activeShard))}>
+          <div className="portrait-cursor-ring">
+            <span className="portrait-cursor-dot" />
+            <span className="portrait-cursor-text">{activeShard?.label}</span>
+          </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

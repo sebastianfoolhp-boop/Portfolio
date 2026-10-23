@@ -41,7 +41,7 @@ function Caret({ blinking, visible }: { blinking: boolean; visible: boolean }) {
   );
 }
 
-export default function HomeIntro() {
+export default function HomeIntro({ onTyped }: { onTyped?: () => void }) {
   const reduced = usePrefersReducedMotion();
   const [count, setCount] = useState(() => (hasPlayed ? TOTAL : 0));
   const [phase, setPhase] = useState<Phase>(() => (hasPlayed ? "done" : "typing"));
@@ -49,6 +49,8 @@ export default function HomeIntro() {
   useEffect(() => {
     // Nothing to animate if it already played, or the visitor prefers reduced motion.
     if (hasPlayed || reduced) {
+      // Reduced motion on a first visit: nothing types, but the hint still follows.
+      if (!hasPlayed && reduced) onTyped?.();
       hasPlayed = true;
       return;
     }
@@ -62,11 +64,13 @@ export default function HomeIntro() {
         return;
       }
       hasPlayed = true;
+      onTyped?.();
       setPhase("blinking");
       timer = window.setTimeout(() => setPhase("done"), CARET_BLINK_AFTER_MS);
     };
     timer = window.setTimeout(step, START_DELAY_MS);
     return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced]);
 
   // Reduced motion: show everything immediately, no caret.
