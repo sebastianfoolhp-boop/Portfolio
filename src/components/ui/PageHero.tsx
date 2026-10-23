@@ -2,8 +2,6 @@ import { ReactNode } from "react";
 import LazyVideo from "./LazyVideo";
 
 interface PageHeroProps {
-  /** Section number shown above the title, like "02". */
-  number?: string;
   title: string;
   subtitle?: string;
   /** Looping silent video behind the title. Loads only when you scroll near it. */
@@ -21,7 +19,6 @@ interface PageHeroProps {
  * original colors; only a light flat tint sits on top so the white title stays readable.
  */
 export default function PageHero({
-  number,
   title,
   subtitle,
   videoSrc,
@@ -47,8 +44,7 @@ export default function PageHero({
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.28)" }} />
 
         <div className="relative z-10 w-full px-6 pb-8 md:px-12 md:pb-12" style={{ textShadow: "0 2px 28px rgba(0,0,0,0.55)" }}>
-          {number && <span className="eyebrow block" style={{ color: "rgba(255,255,255,0.85)" }}>{number}</span>}
-          <h2 className="display mt-4 text-white" style={{ fontSize: "clamp(3.5rem, 11vw, 9.5rem)" }}>
+          <h2 className="display text-white" style={{ fontSize: "clamp(3.5rem, 11vw, 9.5rem)" }}>
             {title}
           </h2>
           {subtitle && <p className="eyebrow mt-5" style={{ color: "rgba(255,255,255,0.85)" }}>{subtitle}</p>}

@@ -44,13 +44,14 @@ function PhotoCell({ img, onClick, className = "" }: { img: GalleryImage; onClic
   );
 }
 
-// Editorial layout for the first photos: wide and narrow cells that swap sides, with different heights.
-const LAYOUT = [
-  "md:col-span-7 md:h-[460px] lg:h-[560px]",
-  "md:col-span-5 md:h-[460px] lg:h-[560px] md:mt-10",
-  "md:col-span-4 md:h-[360px] lg:h-[420px]",
-  "md:col-span-8 md:h-[360px] lg:h-[420px]",
-];
+// Each photo's cell follows its own orientation (set per photo in Sanity), so photos are never
+// squeezed into the wrong shape: landscape photos get wide cells, portrait photos get tall ones.
+// Wide (8 of 12 columns) plus tall (4 of 12) fills a row, and "dense" packing tucks later photos into any gap.
+const SHAPE: Record<"landscape" | "portrait", string> = {
+  landscape: "aspect-[4/3] md:aspect-auto md:col-span-8 md:h-[400px] lg:h-[460px]",
+  portrait: "aspect-[4/5] md:aspect-auto md:col-span-4 md:h-[460px] lg:h-[540px]",
+};
+const shapeOf = (img: GalleryImage) => SHAPE[img.aspect === "portrait" ? "portrait" : "landscape"];
 
 export default function GalleryGrid({ images, previewCount = 4 }: GalleryGridProps) {
   const [expanded, setExpanded] = useState(false);
@@ -59,13 +60,13 @@ export default function GalleryGrid({ images, previewCount = 4 }: GalleryGridPro
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">
-        {preview.map((img, i) => (
+      <div className="grid grid-flow-dense grid-cols-1 gap-4 md:grid-cols-12 md:items-center md:gap-5">
+        {preview.map((img) => (
           <PhotoCell
             key={img.id}
             img={img}
             onClick={() => img.src && setLightbox(img)}
-            className={`${LAYOUT[i % LAYOUT.length]} aspect-[4/5] md:aspect-auto`}
+            className={shapeOf(img)}
           />
         ))}
       </div>

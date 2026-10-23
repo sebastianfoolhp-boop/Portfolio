@@ -4,7 +4,6 @@ import GalleryGrid from "@/components/ui/GalleryGrid";
 import VideoGrid from "@/components/ui/VideoGrid";
 import IconLinks from "@/components/ui/IconLinks";
 import { CardArrow } from "@/components/ui/Card";
-import { sectionNumber } from "./SectionHeader";
 import { GALLERY_IMAGES, VISUAL_YOUTUBE } from "@/lib/data";
 import { getGalleryImages, getYouTubeVideos, galleryImageUrl } from "@/sanity/lib/queries";
 import type { GalleryImage } from "@/components/ui/GalleryGrid";
@@ -44,7 +43,7 @@ export default async function CinemaSection() {
 
   return (
     <section id="cinema">
-      <PageHero number={sectionNumber("cinema")} title="Cinema" subtitle="Filmmaking, photography, and visual storytelling" videoSrc="/images/visual-hero.mp4" />
+      <PageHero title="Cinema" subtitle="Filmmaking, photography, and visual storytelling" videoSrc="/images/visual-hero.mp4" />
 
       <div className="px-6 md:px-12 lg:px-16">
         <div className="mx-auto max-w-7xl">

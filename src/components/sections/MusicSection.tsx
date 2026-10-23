@@ -4,7 +4,6 @@ import VideoGrid from "@/components/ui/VideoGrid";
 import AudioSetsGrid from "@/components/ui/AudioSetsGrid";
 import IconLinks from "@/components/ui/IconLinks";
 import Card, { CardArrow } from "@/components/ui/Card";
-import { sectionNumber } from "./SectionHeader";
 import { AUDIO_SETS, AUDIO_YOUTUBE, SOCIAL_LINKS } from "@/lib/data";
 import { getAudioSets, getYouTubeVideos } from "@/sanity/lib/queries";
 import { getTikTokThumb } from "@/lib/tiktok";
@@ -31,7 +30,7 @@ export default async function MusicSection() {
 
   return (
     <section id="music">
-      <PageHero number={sectionNumber("music")} title="Music" subtitle="DJ sets, mixes, and live sessions" videoSrc="/images/audio-hero.mp4" />
+      <PageHero title="Music" subtitle="DJ sets, mixes, and live sessions" videoSrc="/images/audio-hero.mp4" />
 
       <div className="px-6 md:px-12 lg:px-16">
         <div className="mx-auto max-w-7xl">
