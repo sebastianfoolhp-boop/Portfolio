@@ -9,7 +9,7 @@ import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
  * when it scrolls away, and it stays on its first frame for visitors who prefer
  * reduced motion.
  */
-export default function LazyVideo({ src, className = "" }: { src: string; className?: string }) {
+export default function LazyVideo({ src, className = "", position }: { src: string; className?: string; position?: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const reduced = usePrefersReducedMotion();
   const [near, setNear] = useState(false);
@@ -46,6 +46,7 @@ export default function LazyVideo({ src, className = "" }: { src: string; classN
       preload={armed ? "auto" : "none"}
       src={armed ? src : undefined}
       className={className}
+      style={position ? { objectPosition: position } : undefined}
     />
   );
 }

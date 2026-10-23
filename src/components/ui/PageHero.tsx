@@ -6,6 +6,8 @@ interface PageHeroProps {
   subtitle?: string;
   /** Looping silent video behind the title. Loads only when you scroll near it. */
   videoSrc?: string;
+  /** Which part of the footage stays in view when it is cropped: "x% y%". 50% 50% is the center. */
+  position?: string;
   /** Still image behind the title (used when there is no video). */
   imageSrc?: string;
   imageAlt?: string;
@@ -22,6 +24,7 @@ export default function PageHero({
   title,
   subtitle,
   videoSrc,
+  position = "50% 50%",
   imageSrc,
   imageAlt,
   height = "64svh",
@@ -34,10 +37,10 @@ export default function PageHero({
         style={{ height, minHeight: "380px", background: "#0b0b0b", borderRadius: "28px" }}
       >
         {videoSrc ? (
-          <LazyVideo src={videoSrc} className="absolute inset-0 h-full w-full object-cover" />
+          <LazyVideo src={videoSrc} position={position} className="absolute inset-0 h-full w-full object-cover" />
         ) : imageSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={imageSrc} alt={imageAlt ?? title} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+          <img src={imageSrc} alt={imageAlt ?? title} loading="lazy" className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: position }} />
         ) : null}
 
         {/* Light flat tint, just enough for the white title */}
