@@ -30,7 +30,7 @@ export default async function MusicSection() {
 
   return (
     <section id="music">
-      <PageHero title="Music" subtitle="DJ sets, mixes, and live sessions" videoSrc="/images/audio-hero.mp4" position="50% 0%" />
+      <PageHero title="Music" subtitle="DJ sets, mixes, and live sessions" videoSrc="/images/audio-hero.mp4" position="50% 100%" />
 
       <div className="px-6 md:px-12 lg:px-16">
         <div className="mx-auto max-w-7xl">
