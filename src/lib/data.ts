@@ -114,21 +114,21 @@ export const VIDEO_EMBEDS: { title: string; src: string }[] = [
 export const WORK_HERO = {
   headline: "Building a career at the edge of finance and strategy.",
   pull: "Fortune favors the bold.",
-  meta1: "Incoming McKinsey & Company · JPMorgan Chase Summer Analyst",
+  meta1: "Incoming Analyst at McKinsey and Company · Previous JPMorgan Commercial Banking Summer Analyst",
   meta2: "UF Warrington, May 2027 · Philosophy Minor · Florida",
 };
 
 export const EXPERIENCE = [
   {
     period: "Incoming",
-    org: "McKinsey & Company",
-    role: "Incoming",
+    org: "McKinsey and Company",
+    role: "Incoming Analyst at McKinsey and Company",
     detail: "",
   },
   {
     period: "Summer 2026",
     org: "JPMorgan Chase",
-    role: "Summer Analyst · Commercial & Specialized Industries",
+    role: "Previous JPMorgan Commercial Banking Summer Analyst",
     detail: "Commercial Banking intern training program.",
   },
   {
