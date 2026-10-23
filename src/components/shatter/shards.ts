@@ -9,10 +9,10 @@
 // full rectangle with no gaps or overlaps. If you edit a crack, edit it once
 // here and every polygon that uses it updates.
 
-export const VIEWBOX = { w: 1000, h: 1333 };
+export const VIEWBOX = { w: 1000, h: 1343 };
 
 /** Point the shards fly away from on scroll (roughly the nose). */
-export const FACE_CENTER: [number, number] = [497, 640];
+export const FACE_CENTER: [number, number] = [499, 600];
 
 export const SHATTER = {
   /** Gap between shards before any scrolling, in viewBox units. */
@@ -30,9 +30,9 @@ export const SHATTER = {
   hoverBrightness: 1.22,
   /** Hover transition length in milliseconds. */
   hoverMs: 250,
-  /** Fracture line colour and width (screen pixels, does not scale). */
-  lineColor: "#B4B4B4",
-  lineWidth: 1.1,
+  /** Thickness (viewBox units) and colour of the silver highlight along each crack. The gap width is GAP_MAX below. */
+  edge: 2.0,
+  edgeColor: "#EFEFEF",
 };
 
 import { SECTIONS, type SectionKey } from "@/lib/data";
@@ -44,55 +44,102 @@ type Pt = [number, number];
 /** Display name for a section, read from the shared SECTIONS list in lib/data.ts. */
 const labelOf = (key: SectionKey) => SECTIONS.find((s) => s.key === key)?.label ?? key;
 
-// The portrait image (public/images/portrait-shatter.jpg) has its cracks drawn into it.
-// The points below were traced on that image in its own pixels (1086 x 1448) and are
-// converted to viewBox units by P(). Re-trace them if you ever swap the image.
-const K = 1000 / 1086;
+// ============================================================
+// FRACTURE LAYOUT. Edit the numbers in this block to reshape the pieces.
+// ============================================================
+// The portrait image is public/images/portrait-shatter.jpg (1082 x 1453 pixels, no cracks in it).
+// Every point below is in that image's own pixels; P() converts to viewBox units.
+// Each crack is written once, as a few guide points, then roughened by jag() into a natural
+// zigzag. Both pieces that touch a crack use the very same points, so they always fit together.
+const IMG = { w: 1082, h: 1453 };
+const K = VIEWBOX.w / IMG.w;
 const P = (x: number, y: number): Pt => [
-  x >= 1086 ? 1000 : Math.round(x * K * 10) / 10,
-  y >= 1448 ? 1333 : Math.round(y * K * 10) / 10,
+  x >= IMG.w ? VIEWBOX.w : Math.round(x * K * 10) / 10,
+  y >= IMG.h ? VIEWBOX.h : Math.round(y * K * 10) / 10,
 ];
-const line = (...pts: [number, number][]): Pt[] => pts.map(([x, y]) => P(x, y));
 
-// ---- Crack junctions (where cracks meet) --------------------
-const J1 = P(570, 548);   // between the brows
-const J2 = P(738, 683);   // right cheek
-const J3 = P(652, 857);   // right jaw
-const J4 = P(468, 1010);  // chin
-const J5 = P(328, 850);   // left jaw
-const J6 = P(470, 1078);  // throat
-const J7 = P(558, 1163);  // collar
+/** Small deterministic random numbers so the zigzags are the same on every load. */
+function rng(seed: number) {
+  let t = seed;
+  return () => {
+    t = (t + 0x6d2b79f5) | 0;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Turn straight guide segments into a jagged crack (end points stay exactly where you put them). */
+function jag(guides: [number, number][], seed: number, step = 62, amp = 9): Pt[] {
+  const rand = rng(seed);
+  const out: Pt[] = [];
+  for (let i = 0; i < guides.length - 1; i++) {
+    const [x0, y0] = guides[i];
+    const [x1, y1] = guides[i + 1];
+    const len = Math.hypot(x1 - x0, y1 - y0);
+    const n = Math.max(1, Math.round(len / step));
+    const nx = -(y1 - y0) / len, ny = (x1 - x0) / len;
+    for (let k = 1; k <= n; k++) {
+      const t = k / n;
+      const off = k === n ? 0 : (rand() * 2 - 1) * amp;
+      out.push(P(x0 + (x1 - x0) * t + nx * off, y0 + (y1 - y0) * t + ny * off));
+    }
+  }
+  return out.slice(0, -1); // the last point is the junction itself, added by the polygon
+}
+
+// ---- Junctions (where cracks meet) ----------------------------
+const J1 = P(530, 500);   // between the brows
+const J2 = P(475, 740);   // just above the lips, under the nose
 
 // ---- Where cracks leave the picture (on its border) ---------
-const TOPb = P(800, 0);
-const Lb1 = P(0, 204), Lb2 = P(0, 470);
-const Rb1 = P(1086, 775), Rb2 = P(1086, 960);
-const Bb = P(685, 1448);
+const T = P(670, 0), L1 = P(0, 430), R1 = P(1082, 600), L2 = P(0, 860), R2 = P(1082, 980), B = P(620, 1453);
 
 // ---- Corners ------------------------------------------------
-const C00: Pt = [0, 0], C10: Pt = [1000, 0], C11: Pt = [1000, 1333], C01: Pt = [0, 1333];
+const C00: Pt = [0, 0], C10: Pt = [VIEWBOX.w, 0], C11: Pt = [VIEWBOX.w, VIEWBOX.h], C01: Pt = [0, VIEWBOX.h];
 
-// ---- Crack polylines (interior points only, in the direction named) ----
-const A_ = line([350, 358], [400, 380], [445, 410], [470, 450], [520, 478], [568, 515]);       // left edge -> J1
-const B_ = line([580, 525], [600, 500], [630, 440], [650, 390], [680, 330], [697, 312]);        // J1 -> top edge
-const C1 = line([620, 585], [690, 625], [728, 655]);                                            // J1 -> J2
-const C2 = line([800, 710], [818, 722]);                                                        // J2 -> right edge
-const D1 = line([715, 720], [690, 780]);                                                        // J2 -> J3
-const D2 = line([620, 900], [560, 945], [500, 985]);                                            // J3 -> J4
-const E3 = line([700, 880], [765, 935]);                                                        // J3 -> right edge
-const E_ = line([295, 600], [340, 625], [395, 655], [440, 690], [445, 705], [435, 730], [400, 780], [350, 830]); // left edge -> J5
-const EX = line([286, 570], [280, 545], [262, 520], [200, 500]);                                  // from the start of E_ up past the ear to the left edge
-const F = line([350, 885], [385, 935], [420, 980]);                                             // J5 -> J4
-const G = line([462, 1040], [450, 1070]);                                                       // J4 -> J6
-const I = line([500, 1115], [530, 1150]);                                                       // J6 -> J7
-const K_ = line([575, 1195], [600, 1240], [625, 1285], [655, 1345], [675, 1405]);               // J7 -> bottom edge
+// ---- The seven cracks, each listed in the direction named ----
+const V = jag([[670, 0], [610, 220], [565, 380], [530, 500]], 11);                      // top edge -> brows
+const HL = jag([[530, 500], [440, 452], [370, 448], [290, 500], [0, 430]], 23);        // brows -> left edge
+const HR = jag([[530, 500], [620, 462], [760, 440], [860, 520], [1082, 600]], 37);     // brows -> right edge
+const N = jag([[530, 500], [540, 560], [500, 640], [470, 700], [475, 740]], 41);       // brows -> down the nose -> above the lips
+const ML = jag([[475, 740], [400, 762], [330, 730], [290, 850], [200, 800], [0, 860]], 53);   // above lips -> left edge
+const MR = jag([[475, 740], [560, 742], [650, 738], [720, 820], [800, 880], [1082, 980]], 67); // above lips -> right edge
+const V2 = jag([[475, 740], [520, 800], [505, 870], [560, 950], [600, 1100], [560, 1250], [620, 1453]], 79); // lips -> bottom edge
 
 const rev = (p: Pt[]) => [...p].reverse();
+
+// ---- How the cracks are drawn ---------------------------------
+// Every crack is a tapered black gap (thin where it ends at the picture's edge, widest in the middle)
+// with a thin silver highlight along its upper-left lip, like a chip in glazed porcelain.
+const GAP_MAX = 6.5;
+function ribbon(pts: Pt[], taperStart: boolean, taperEnd: boolean) {
+  const len = [0];
+  for (let i = 1; i < pts.length; i++) len.push(len[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const total = len[len.length - 1];
+  const left: Pt[] = [], right: Pt[] = [];
+  let lit = 0;
+  pts.forEach((p, i) => {
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+    const tl = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+    const nx = -(b[1] - a[1]) / tl, ny = (b[0] - a[0]) / tl;
+    const t = len[i] / total;
+    const grow = Math.min(taperStart ? t / 0.16 : 1, taperEnd ? (1 - t) / 0.16 : 1, 1);
+    const w = GAP_MAX * (0.16 + 0.84 * grow) * (0.82 + 0.3 * Math.abs(Math.sin(i * 2.3 + total)));
+    left.push([p[0] + (nx * w) / 2, p[1] + (ny * w) / 2]);
+    right.push([p[0] - (nx * w) / 2, p[1] - (ny * w) / 2]);
+    lit += -nx - ny; // positive when the left edge faces up and to the left
+  });
+  const f = (q: Pt) => `${Math.round(q[0] * 10) / 10} ${Math.round(q[1] * 10) / 10}`;
+  const dark = `M${left.map(f).join(" L")} L${[...right].reverse().map(f).join(" L")} Z`;
+  const edge = lit >= 0 ? left : right;
+  return { dark, light: `M${edge.map(f).join(" L")}` };
+}
 
 interface ShardSpec {
   /** Unique name of this piece. */
   id: string;
-  /** The section this piece opens. Several pieces may open the same section. */
+  /** The section this piece opens. */
   section: SectionKey;
   label: string;
   points: Pt[];
@@ -102,26 +149,41 @@ interface ShardSpec {
   depth: number;
 }
 
-// Six pieces, one per section. Which piece opens which section:
-//   top left -> About            top right -> Music
-//   centre of the face -> Cinema right cheek -> Work
-//   left cheek, neck and lower left -> The Lab
-//   right jaw, neck and lower right -> Contact
+// Exactly six pieces, one per section. Each polygon is built from the cracks above, so every
+// crack is a shared edge between two neighbours:
+//   upper left -> About          upper right -> Music
+//   middle left -> Cinema        middle right -> Work
+//   lower left -> The Lab        lower right -> Contact
 // To re-map a piece, change its `section` to any key from SECTIONS in lib/data.ts.
 const SPECS: ShardSpec[] = [
-  { id: "p-about",    section: "about",   label: labelOf("about"),   rotate: -2.5, depth:  0.015,
-    points: [C00, TOPb, ...rev(B_), J1, ...rev(A_), Lb1] },
-  { id: "p-music",    section: "music",   label: labelOf("music"),   rotate:  2.2, depth: -0.012,
-    points: [TOPb, C10, Rb1, ...rev(C2), J2, ...rev(C1), J1, ...B_] },
-  { id: "p-cinema",   section: "cinema",  label: labelOf("cinema"),  rotate:  1.4, depth: -0.012,
-    points: [Lb1, ...A_, J1, ...C1, J2, ...D1, J3, ...D2, J4, ...rev(F), J5, ...rev(E_), ...EX, Lb2] },
-  { id: "p-work",     section: "work",    label: labelOf("work"),    rotate: -1.8, depth:  0.02,
-    points: [J2, ...C2, Rb1, Rb2, ...rev(E3), J3, ...rev(D1)] },
-  { id: "p-lab",      section: "lab",     label: labelOf("lab"),     rotate: -1.6, depth: -0.01,
-    points: [Lb2, ...rev(EX), ...E_, J5, ...F, J4, ...G, J6, ...I, J7, ...K_, Bb, C01] },
-  { id: "p-contact",  section: "contact", label: labelOf("contact"), rotate:  2.2, depth:  0.012,
-    points: [J3, ...E3, Rb2, C11, Bb, ...rev(K_), J7, ...rev(I), J6, ...rev(G), J4, ...rev(D2)] },
+  { id: "p-about",   section: "about",   label: labelOf("about"),   rotate: -2.4, depth:  0.015,
+    points: [C00, T, ...V, J1, ...HL, L1] },
+  { id: "p-music",   section: "music",   label: labelOf("music"),   rotate:  2.2, depth: -0.012,
+    points: [T, C10, R1, ...rev(HR), J1, ...rev(V)] },
+  { id: "p-cinema",  section: "cinema",  label: labelOf("cinema"),  rotate:  1.6, depth: -0.012,
+    points: [L1, ...rev(HL), J1, ...N, J2, ...ML, L2] },
+  { id: "p-work",    section: "work",    label: labelOf("work"),    rotate: -1.8, depth:  0.015,
+    points: [R1, R2, ...rev(MR), J2, ...rev(N), J1, ...HR] },
+  { id: "p-lab",     section: "lab",     label: labelOf("lab"),     rotate: -1.4, depth: -0.01,
+    points: [L2, ...rev(ML), J2, ...V2, B, C01] },
+  { id: "p-contact", section: "contact", label: labelOf("contact"), rotate:  2.0, depth:  0.012,
+    points: [J2, ...MR, R2, C11, B, ...rev(V2)] },
 ];
+
+/** Every crack, start to end, drawn identically on whichever pieces touch it. */
+const FULL_CRACKS: { pts: Pt[]; s: boolean; e: boolean }[] = [
+  { pts: [T, ...V, J1], s: true, e: false },
+  { pts: [J1, ...HL, L1], s: false, e: true },
+  { pts: [J1, ...HR, R1], s: false, e: true },
+  { pts: [J1, ...N, J2], s: false, e: false },
+  { pts: [J2, ...ML, L2], s: false, e: true },
+  { pts: [J2, ...MR, R2], s: false, e: true },
+  { pts: [J2, ...V2, B], s: false, e: true },
+];
+const ART = FULL_CRACKS.map((c) => ribbon(c.pts, c.s, c.e));
+/** SVG path data for all the dark gaps, and for the silver highlights. */
+export const CRACK_GAPS = ART.map((a) => a.dark).join(" ");
+export const CRACK_EDGES = ART.map((a) => a.light).join(" ");
 
 export interface Shard extends ShardSpec {
   centroid: Pt;

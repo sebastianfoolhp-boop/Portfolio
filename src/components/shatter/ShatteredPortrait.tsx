@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTransform, useMotionTemplate, type MotionValue } from "framer-motion";
-import { SHARDS, SHATTER, VIEWBOX, VIEW, type Shard, type SectionKey } from "./shards";
+import { SHARDS, SHATTER, VIEWBOX, VIEW, CRACK_GAPS, CRACK_EDGES, type Shard, type SectionKey } from "./shards";
 import { scrollToSection } from "@/lib/scrollToSection";
 
 const DEFAULT_PORTRAIT = "/images/portrait-shatter.jpg";
@@ -57,18 +57,21 @@ function ShardPiece({ src, shard, progress, reduced, active, onActivate, onDeact
         <g clipPath={`url(#${shard.id}-clip)`}>
           <image href={src} x={0} y={0} width={VIEWBOX.w} height={VIEWBOX.h} preserveAspectRatio="none" />
         </g>
-        {/* Fracture edges: interior cracks only, hidden wherever they would cross empty black. */}
-        <path
-          d={shard.crackPath}
-          fill="none"
-          mask="url(#shard-line-mask)"
-          stroke={active ? "#FFFFFF" : "transparent"}
-          strokeWidth={active ? SHATTER.lineWidth * 2 : SHATTER.lineWidth}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
-          style={{ transition: `stroke ${ms}ms ease-out, stroke-width ${ms}ms ease-out` }}
-        />
+        {/* The cracks, drawn inside THIS piece's own outline: a tapered black gap with a thin silver highlight.
+            Each crack is half on one piece and half on its neighbour, so the two halves always match. */}
+        <g clipPath={`url(#${shard.id}-clip)`}>
+          {/* highlight first, then the gap on top: only the outer half of the highlight stays visible */}
+          <path
+            d={CRACK_EDGES}
+            fill="none"
+            mask="url(#shard-line-mask)"
+            stroke={active ? "#FFFFFF" : SHATTER.edgeColor}
+            strokeWidth={(active ? SHATTER.edge * 1.8 : SHATTER.edge) * 2}
+            strokeLinejoin="round"
+            style={{ transition: `stroke ${ms}ms ease-out, stroke-width ${ms}ms ease-out` }}
+          />
+          <path d={CRACK_GAPS} fill="#000000" />
+        </g>
         {/* Polygon-shaped hit area: this is what the cursor, finger and keyboard interact with. */}
         <polygon
           points={points}
