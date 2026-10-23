@@ -65,7 +65,7 @@ const J7 = P(558, 1163);  // collar
 
 // ---- Where cracks leave the picture (on its border) ---------
 const TOPb = P(800, 0);
-const Lb1 = P(0, 204), Lb2 = P(0, 436);
+const Lb1 = P(0, 204), Lb2 = P(0, 470);
 const Rb1 = P(1086, 775), Rb2 = P(1086, 960);
 const Bb = P(685, 1448);
 
@@ -81,6 +81,7 @@ const D1 = line([715, 720], [690, 780]);                                        
 const D2 = line([620, 900], [560, 945], [500, 985]);                                            // J3 -> J4
 const E3 = line([700, 880], [765, 935]);                                                        // J3 -> right edge
 const E_ = line([295, 600], [340, 625], [395, 655], [440, 690], [445, 705], [435, 730], [400, 780], [350, 830]); // left edge -> J5
+const EX = line([286, 570], [280, 545], [262, 520], [200, 500]);                                  // from the start of E_ up past the ear to the left edge
 const F = line([350, 885], [385, 935], [420, 980]);                                             // J5 -> J4
 const G = line([462, 1040], [450, 1070]);                                                       // J4 -> J6
 const I = line([500, 1115], [530, 1150]);                                                       // J6 -> J7
@@ -113,11 +114,11 @@ const SPECS: ShardSpec[] = [
   { id: "p-music",    section: "music",   label: labelOf("music"),   rotate:  2.2, depth: -0.012,
     points: [TOPb, C10, Rb1, ...rev(C2), J2, ...rev(C1), J1, ...B_] },
   { id: "p-cinema",   section: "cinema",  label: labelOf("cinema"),  rotate:  1.4, depth: -0.012,
-    points: [Lb1, ...A_, J1, ...C1, J2, ...D1, J3, ...D2, J4, ...rev(F), J5, ...rev(E_), Lb2] },
+    points: [Lb1, ...A_, J1, ...C1, J2, ...D1, J3, ...D2, J4, ...rev(F), J5, ...rev(E_), ...EX, Lb2] },
   { id: "p-work",     section: "work",    label: labelOf("work"),    rotate: -1.8, depth:  0.02,
     points: [J2, ...C2, Rb1, Rb2, ...rev(E3), J3, ...rev(D1)] },
   { id: "p-lab",      section: "lab",     label: labelOf("lab"),     rotate: -1.6, depth: -0.01,
-    points: [Lb2, ...E_, J5, ...F, J4, ...G, J6, ...I, J7, ...K_, Bb, C01] },
+    points: [Lb2, ...rev(EX), ...E_, J5, ...F, J4, ...G, J6, ...I, J7, ...K_, Bb, C01] },
   { id: "p-contact",  section: "contact", label: labelOf("contact"), rotate:  2.2, depth:  0.012,
     points: [J3, ...E3, Rb2, C11, Bb, ...rev(K_), J7, ...rev(I), J6, ...rev(G), J4, ...rev(D2)] },
 ];
