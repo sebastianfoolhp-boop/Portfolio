@@ -12,11 +12,11 @@
 export const VIEWBOX = { w: 1000, h: 1333 };
 
 /** Point the shards fly away from on scroll (roughly the nose). */
-export const FACE_CENTER: [number, number] = [500, 720];
+export const FACE_CENTER: [number, number] = [497, 640];
 
 export const SHATTER = {
   /** Gap between shards before any scrolling, in viewBox units. */
-  initialGap: 2.5,
+  initialGap: 0,
   /**
    * How far shards travel outward by the time the hero has scrolled away, in
    * viewBox units. On screen this is about 10px on a phone up to about 25px on
@@ -44,36 +44,57 @@ type Pt = [number, number];
 /** Display name for a section, read from the shared SECTIONS list in lib/data.ts. */
 const labelOf = (key: SectionKey) => SECTIONS.find((s) => s.key === key)?.label ?? key;
 
-// ---- Crack junctions ----------------------------------------
-const A: Pt = [505, 470];   // between the brows
-const B: Pt = [440, 1000];  // left of the chin
-const C: Pt = [640, 820];   // right cheek
+// The portrait image (public/images/portrait-shatter.jpg) has its cracks drawn into it.
+// The points below were traced on that image in its own pixels (1086 x 1448) and are
+// converted to viewBox units by P(). Re-trace them if you ever swap the image.
+const K = 1000 / 1086;
+const P = (x: number, y: number): Pt => [
+  x >= 1086 ? 1000 : Math.round(x * K * 10) / 10,
+  y >= 1448 ? 1333 : Math.round(y * K * 10) / 10,
+];
+const line = (...pts: [number, number][]): Pt[] => pts.map(([x, y]) => P(x, y));
 
-// ---- Edge exits ---------------------------------------------
-const T: Pt = [530, 0];      // top edge
-const L1: Pt = [0, 680];     // left edge, upper
-const L2: Pt = [0, 1050];    // left edge, lower
-const BB: Pt = [480, 1333];  // bottom edge
-const R1: Pt = [1000, 650];  // right edge, upper
-const R2: Pt = [1000, 800];  // right edge, lower
+// ---- Crack junctions (where cracks meet) --------------------
+const J1 = P(570, 548);   // between the brows
+const J2 = P(738, 683);   // right cheek
+const J3 = P(652, 857);   // right jaw
+const J4 = P(468, 1010);  // chin
+const J5 = P(328, 850);   // left jaw
+const J6 = P(470, 1078);  // throat
+const J7 = P(558, 1163);  // collar
+
+// ---- Where cracks leave the picture (on its border) ---------
+const TOPb = P(800, 0);
+const Lb1 = P(0, 204), Lb2 = P(0, 436), Lb3 = P(0, 1252);
+const Rb1 = P(1086, 775), Rb2 = P(1086, 960), Rb3 = P(1086, 1000);
+const Bb = P(685, 1448);
 
 // ---- Corners ------------------------------------------------
 const C00: Pt = [0, 0], C10: Pt = [1000, 0], C11: Pt = [1000, 1333], C01: Pt = [0, 1333];
 
-// ---- Crack polylines (interior points only, listed from first node to second)
-const AT: Pt[]  = [[470, 380], [520, 250], [490, 120]];
-const AL1: Pt[] = [[430, 560], [340, 610], [230, 640], [120, 690]];
-const AR1: Pt[] = [[580, 590], [680, 620], [800, 620], [900, 640]];
-const AC: Pt[]  = [[545, 580], [525, 690], [585, 760]];
-const CR2: Pt[] = [[760, 790], [860, 830]];
-const CB: Pt[]  = [[560, 870], [480, 920]];
-const BL2: Pt[] = [[330, 980], [220, 1030], [100, 1010]];
-const BBB: Pt[] = [[470, 1100], [430, 1210]];
+// ---- Crack polylines (interior points only, in the direction named) ----
+const A_ = line([350, 358], [400, 380], [445, 410], [470, 450], [520, 478], [568, 515]);       // left edge -> J1
+const B_ = line([580, 525], [600, 500], [630, 440], [650, 390], [680, 330], [697, 312]);        // J1 -> top edge
+const C1 = line([620, 585], [690, 625], [728, 655]);                                            // J1 -> J2
+const C2 = line([800, 710], [818, 722]);                                                        // J2 -> right edge
+const D1 = line([715, 720], [690, 780]);                                                        // J2 -> J3
+const D2 = line([620, 900], [560, 945], [500, 985]);                                            // J3 -> J4
+const E3 = line([700, 880], [765, 935]);                                                        // J3 -> right edge
+const E_ = line([295, 600], [340, 625], [395, 655], [440, 690], [445, 705], [435, 730], [400, 780], [350, 830]); // left edge -> J5
+const F = line([350, 885], [385, 935], [420, 980]);                                             // J5 -> J4
+const G = line([462, 1040], [450, 1070]);                                                       // J4 -> J6
+const H = line([420, 1100], [380, 1130], [330, 1150], [265, 1170]);                             // J6 -> left edge
+const I = line([500, 1115], [530, 1150]);                                                       // J6 -> J7
+const Jj = line([610, 1148], [660, 1115], [720, 1080], [795, 1052]);                            // J7 -> right edge
+const K_ = line([575, 1195], [600, 1240], [625, 1285], [655, 1345], [675, 1405]);               // J7 -> bottom edge
 
 const rev = (p: Pt[]) => [...p].reverse();
 
 interface ShardSpec {
-  id: SectionKey;
+  /** Unique name of this piece. */
+  id: string;
+  /** The section this piece opens. Several pieces may open the same section. */
+  section: SectionKey;
   label: string;
   points: Pt[];
   /** Degrees of rotation at full scroll. */
@@ -82,25 +103,29 @@ interface ShardSpec {
   depth: number;
 }
 
-// Which piece opens which section. To re-map a piece, change its `id` to any key
-// from SECTIONS in lib/data.ts. Each id may be used only once.
-//   upper left  -> About        upper right -> Music
-//   middle left -> Cinema       middle right -> Work
-//   lower left  -> The Lab      lower right -> Contact
-// `rotate` (degrees) and `depth` (scale change) shape how each piece drifts as the page scrolls.
+// Eight pieces, as many as the cracks in the picture make. Which piece opens which section:
+//   top left -> About            top right -> Music
+//   centre of face -> Cinema     right cheek -> Work
+//   left cheek and neck, and the lower left -> The Lab
+//   right jaw and neck, and the lower right -> Contact
+// To re-map a piece, change its `section` to any key from SECTIONS in lib/data.ts.
 const SPECS: ShardSpec[] = [
-  { id: "about",   label: labelOf("about"),   rotate: -2.5, depth:  0.015,
-    points: [C00, T, ...rev(AT), A, ...AL1, L1] },
-  { id: "music",   label: labelOf("music"),   rotate:  2.2, depth: -0.012,
-    points: [T, C10, R1, ...rev(AR1), A, ...AT] },
-  { id: "cinema",  label: labelOf("cinema"),  rotate:  1.6, depth: -0.015,
-    points: [L1, ...rev(AL1), A, ...AC, C, ...CB, B, ...BL2, L2] },
-  { id: "work",    label: labelOf("work"),    rotate: -1.8, depth:  0.02,
-    points: [A, ...AR1, R1, R2, ...rev(CR2), C, ...rev(AC)] },
-  { id: "lab",     label: labelOf("lab"),     rotate: -1.5, depth: -0.01,
-    points: [L2, ...rev(BL2), B, ...BBB, BB, C01] },
-  { id: "contact", label: labelOf("contact"), rotate:  2.4, depth:  0.015,
-    points: [B, ...rev(CB), C, ...CR2, R2, C11, BB, ...rev(BBB)] },
+  { id: "p-about",    section: "about",   label: labelOf("about"),   rotate: -2.5, depth:  0.015,
+    points: [C00, TOPb, ...rev(B_), J1, ...rev(A_), Lb1] },
+  { id: "p-music",    section: "music",   label: labelOf("music"),   rotate:  2.2, depth: -0.012,
+    points: [TOPb, C10, Rb1, ...rev(C2), J2, ...rev(C1), J1, ...B_] },
+  { id: "p-cinema",   section: "cinema",  label: labelOf("cinema"),  rotate:  1.4, depth: -0.012,
+    points: [Lb1, ...A_, J1, ...C1, J2, ...D1, J3, ...D2, J4, ...rev(F), J5, ...rev(E_), Lb2] },
+  { id: "p-work",     section: "work",    label: labelOf("work"),    rotate: -1.8, depth:  0.02,
+    points: [J2, ...C2, Rb1, Rb2, ...rev(E3), J3, ...rev(D1)] },
+  { id: "p-lab",      section: "lab",     label: labelOf("lab"),     rotate: -1.6, depth: -0.01,
+    points: [Lb2, ...E_, J5, ...F, J4, ...G, J6, ...H, Lb3] },
+  { id: "p-lab-low",  section: "lab",     label: labelOf("lab"),     rotate: -1.2, depth:  0.01,
+    points: [Lb3, ...rev(H), J6, ...I, J7, ...K_, Bb, C01] },
+  { id: "p-contact",  section: "contact", label: labelOf("contact"), rotate:  2.0, depth:  0.012,
+    points: [J3, ...E3, Rb2, Rb3, ...rev(Jj), J7, ...rev(I), J6, ...rev(G), J4, ...rev(D2)] },
+  { id: "p-contact-low", section: "contact", label: labelOf("contact"), rotate: 2.4, depth: -0.01,
+    points: [J7, ...Jj, Rb3, C11, Bb, ...rev(K_)] },
 ];
 
 export interface Shard extends ShardSpec {

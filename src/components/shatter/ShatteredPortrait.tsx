@@ -6,7 +6,7 @@ import { useTransform, useMotionTemplate, type MotionValue } from "framer-motion
 import { SHARDS, SHATTER, VIEWBOX, VIEW, type Shard, type SectionKey } from "./shards";
 import { scrollToSection } from "@/lib/scrollToSection";
 
-const DEFAULT_PORTRAIT = "/images/portrait-bw.jpg";
+const DEFAULT_PORTRAIT = "/images/portrait-shatter.jpg";
 
 interface PieceProps {
   src: string;
@@ -14,8 +14,8 @@ interface PieceProps {
   progress: MotionValue<number>;
   reduced: boolean;
   active: boolean;
-  onActivate: (id: SectionKey, el: SVGElement, via: "mouse" | "other") => void;
-  onDeactivate: (id: SectionKey) => void;
+  onActivate: (id: string, el: SVGElement, via: "mouse" | "other") => void;
+  onDeactivate: (id: string) => void;
   onSelect: (id: SectionKey) => void;
 }
 
@@ -62,7 +62,7 @@ function ShardPiece({ src, shard, progress, reduced, active, onActivate, onDeact
           d={shard.crackPath}
           fill="none"
           mask="url(#shard-line-mask)"
-          stroke={active ? "#FFFFFF" : SHATTER.lineColor}
+          stroke={active ? "#FFFFFF" : "transparent"}
           strokeWidth={active ? SHATTER.lineWidth * 2 : SHATTER.lineWidth}
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -87,8 +87,8 @@ function ShardPiece({ src, shard, progress, reduced, active, onActivate, onDeact
           // Keyboard focus shows the same highlight as hover.
           onFocus={(e) => { if (e.currentTarget.matches(":focus-visible")) onActivate(shard.id, e.currentTarget, "other"); }}
           onBlur={() => onDeactivate(shard.id)}
-          onClick={() => onSelect(shard.id)}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(shard.id); } }}
+          onClick={() => onSelect(shard.section)}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(shard.section); } }}
         />
       </g>
     </g>
@@ -105,7 +105,7 @@ interface ShatteredPortraitProps {
 
 export default function ShatteredPortrait({ progress, reduced, src = DEFAULT_PORTRAIT }: ShatteredPortraitProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<SectionKey | null>(null);
+  const [active, setActive] = useState<string | null>(null);
   const [labelPos, setLabelPos] = useState<{ x: number; y: number } | null>(null);
   const [via, setVia] = useState<"mouse" | "other">("other");
   const [finePointer, setFinePointer] = useState(false);
@@ -174,7 +174,7 @@ export default function ShatteredPortrait({ progress, reduced, src = DEFAULT_POR
   }, [finePointer]);
 
   // Place the label at the centre of the shard's actual on-screen rectangle.
-  const onActivate = useCallback((id: SectionKey, el: SVGElement, how: "mouse" | "other") => {
+  const onActivate = useCallback((id: string, el: SVGElement, how: "mouse" | "other") => {
     const wrap = wrapRef.current;
     if (!wrap) return;
     const w = wrap.getBoundingClientRect();
@@ -183,7 +183,7 @@ export default function ShatteredPortrait({ progress, reduced, src = DEFAULT_POR
     setVia(how);
     setActive(id);
   }, []);
-  const onDeactivate = useCallback((id: SectionKey) => setActive((cur) => (cur === id ? null : cur)), []);
+  const onDeactivate = useCallback((id: string) => setActive((cur) => (cur === id ? null : cur)), []);
   const onSelect = useCallback((id: SectionKey) => scrollToSection(id), []);
 
   const activeShard = active ? SHARDS.find((s) => s.id === active) : undefined;

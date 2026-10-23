@@ -1,5 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
 import Hero from "@/components/home/Hero";
 import AboutSection from "@/components/sections/AboutSection";
 import MusicSection from "@/components/sections/MusicSection";
@@ -9,10 +7,6 @@ import LabSection from "@/components/sections/LabSection";
 import ContactSection from "@/components/sections/ContactSection";
 
 // Music and Cinema read from Sanity, so the page refreshes its data at most once a minute.
-// Drop a full-color version of the portrait here (same shape, face on black) and the homepage uses it.
-// Portrait choices, first one found wins: game-character style, then full color, then black and white.
-const PORTRAITS = ["/images/portrait-toon.jpg", "/images/portrait-color.jpg"];
-const portraitSrc = () => PORTRAITS.find((p) => fs.existsSync(path.join(process.cwd(), "public", p)));
 
 export const revalidate = 60;
 
@@ -22,7 +16,7 @@ export const revalidate = 60;
 export default function Page() {
   return (
     <main>
-      <Hero portraitSrc={portraitSrc()} />
+      <Hero />
       <AboutSection />
       <MusicSection />
       <CinemaSection />
