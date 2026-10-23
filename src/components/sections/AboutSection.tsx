@@ -36,7 +36,7 @@ export default function AboutSection() {
           <SectionReveal className="md:col-span-7">
             <Card tone="orange" decor="arcs" className="h-full min-h-[22rem] p-7 md:p-12">
               <span className="eyebrow">In one line</span>
-              <p className="display mt-10 md:mt-auto" style={{ fontSize: "clamp(2.5rem, 6vw, 5.5rem)" }}>Sebas Perez</p>
+              <p className="display mt-10 md:mt-auto" style={{ fontSize: "clamp(2rem, 4.4vw, 4rem)" }}>{HOME_ABOUT.body}</p>
             </Card>
           </SectionReveal>
 
