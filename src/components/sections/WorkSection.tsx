@@ -1,11 +1,10 @@
 import SectionReveal from "@/components/ui/SectionReveal";
-import Card, { CardArrow, type Tone } from "@/components/ui/Card";
+import Card, { CardArrow } from "@/components/ui/Card";
 import IconLinks from "@/components/ui/IconLinks";
 import SectionHeader from "./SectionHeader";
-import { WORK_HERO, WORK_STATS, WORK_NARRATIVE, WORK_CARDS, EXPERIENCE } from "@/lib/data";
+import { WORK_HERO, WORK_NARRATIVE, WORK_CARDS, EXPERIENCE } from "@/lib/data";
 
 // Color is used sparingly here: mostly charcoal, with a few accents.
-const STAT_TONES: Tone[] = ["charcoal", "cobalt", "charcoal", "charcoal"]; // order of WORK_STATS
 const EXPERIENCE_DOTS = ["bg-pop-purple", "bg-pop-cobalt", "bg-pop-lime"];  // order of EXPERIENCE
 
 const subTitleSize = { fontSize: "clamp(2.25rem, 5vw, 4rem)" };
@@ -60,20 +59,6 @@ export default function WorkSection() {
           ))}
         </div>
 
-        {/* At a glance */}
-        <SectionReveal>
-          <div className="mt-28 md:mt-40">
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
-              {WORK_STATS.map((stat, i) => (
-                <Card key={stat.label} tone={STAT_TONES[i] ?? "charcoal"} className="min-h-[11rem] p-6 md:p-7">
-                  <p className="display" style={{ fontSize: "clamp(1.9rem, 3.2vw, 2.9rem)" }}>{stat.value}</p>
-                  <p className="eyebrow mt-auto pt-6" style={{ fontSize: "10px", lineHeight: 1.7 }}>{stat.label}</p>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </SectionReveal>
-
         {/* Experience */}
         <SectionReveal>
           <div className="mt-28 md:mt-40">
@@ -109,24 +94,10 @@ export default function WorkSection() {
           </div>
         </SectionReveal>
 
-        {/* Proud to have helped */}
-        <SectionReveal>
-          <div className="mt-28 md:mt-40">
-            <span className="eyebrow">Proud to have helped</span>
-            <div className="mt-8 grid grid-cols-3 gap-4 md:grid-cols-6 md:gap-5">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Card key={i} tone="dark" hover={false} className="h-20">
-                  <span className="m-auto text-center text-[9px] font-bold uppercase tracking-[0.18em] text-ink-3">Coming soon</span>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </SectionReveal>
-
         {/* Link on to Contact */}
         <SectionReveal>
           <div className="mx-auto mt-32 max-w-3xl text-center md:mt-44">
-            <h3 className="display text-ink" style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.5rem)" }}>Want to work together?</h3>
+            <h3 className="display text-ink" style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.5rem)" }}>Want to work <mark className="rounded-xl bg-pop-cobalt px-3 text-white" style={{ boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>together</mark>?</h3>
             <p className="mt-6 text-lg text-ink-2 md:text-xl">Reach out. Let&apos;s collaborate.</p>
             <a href="#contact" className="pill mt-10 border border-white/30 text-white">
               Get in touch <CardArrow className="h-4 w-4" />
