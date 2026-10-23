@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, MouseEvent, ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Decor, { type DecorKind } from "./Decor";
 
@@ -33,6 +33,8 @@ interface CardProps {
   /** Lift and grow on hover. On by default. */
   hover?: boolean;
   className?: string;
+  /** Runs when the card is clicked. Call preventDefault() to stop a link card from navigating. */
+  onClick?: (e: MouseEvent<HTMLElement>) => void;
   /** Inline style, used for things like the Lab's per-card tilt. */
   style?: CSSProperties;
   children: ReactNode;
@@ -47,6 +49,7 @@ export default function Card({
   hover = true,
   className = "",
   style,
+  onClick,
   children,
 }: CardProps) {
   const cls = `card ${hover ? "card-hover" : ""} ${TONES[tone]} ${className}`;
@@ -63,6 +66,7 @@ export default function Card({
         href={href}
         className={`${cls} block outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white`}
         style={style}
+        onClick={onClick}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {inner}
