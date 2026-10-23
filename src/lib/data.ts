@@ -2,20 +2,38 @@
 // SITE DATA — edit content here, never in the page components
 // ============================================================
 
-export const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Audio", href: "/audio" },
-  { label: "Visual", href: "/visual" },
-  { label: "Professional", href: "/professional" },
-];
+// -----------------------------------------------------------
+// Sections: the single source of truth for the page order and anchors.
+// The whole site is one scrolling page. Each entry here is a section whose
+// HTML id is its `key` (so "about" is #about). The floating dock and the
+// shattered portrait both read this list, so renaming a section here updates
+// both at once. The order below is the order on the page.
+// (To change which ICON the dock shows, see components/dock/dockItems.ts.)
+// (To change which PIECE of the portrait opens which section, see components/shatter/shards.ts.)
+// -----------------------------------------------------------
+export const SECTIONS = [
+  { key: "about", label: "About" },
+  { key: "music", label: "Music" },
+  { key: "cinema", label: "Cinema" },
+  { key: "work", label: "Work" },
+  { key: "lab", label: "The Lab" },
+  { key: "contact", label: "Contact" },
+] as const;
+
+export type SectionKey = (typeof SECTIONS)[number]["key"];
 
 // -----------------------------------------------------------
 // Home
 // -----------------------------------------------------------
-export const HOME_HERO = {
-  name: "SEBASTIAN",
-  tagline: "La buena fai.",
-  heroCopy: "I live at the intersection of spreadsheets and speaker stacks.",
+export const HOME_INTRO = {
+  // Typed out on load. "tone: muted" renders that part in subtle gray italic.
+  headline: [
+    { text: "Hi, my name is ", tone: "base" },
+    { text: "Sebas", tone: "base" },
+    { text: "(tian)", tone: "muted" },
+    { text: ".", tone: "base" },
+  ],
+  sentence: "A collection of what I create, what I do and everything I'm curious about.",
 };
 
 export const HOME_ABOUT = {
@@ -24,28 +42,31 @@ export const HOME_ABOUT = {
   meta: `UF Warrington, Class of 2027 · Philosophy Minor · Incoming McKinsey & Company`,
 };
 
-export const HOME_TEASERS = [
-  {
-    label: "Audio",
-    href: "/audio",
-    sublabel: "DJ Sets · Mixes · Production",
-    gradient: "from-blue-accent/30 to-violet-accent/20",
-    glow: "shadow-glow-blue",
-  },
-  {
-    label: "Visual",
-    href: "/visual",
-    sublabel: "Photography · cinematography",
-    gradient: "from-violet-accent/30 to-cyan-accent/20",
-    glow: "shadow-glow-violet",
-  },
-  {
-    label: "Professional",
-    href: "/professional",
-    sublabel: "Finance · Consulting · Strategy",
-    gradient: "from-cyan-accent/20 to-blue-accent/30",
-    glow: "shadow-glow-cyan",
-  },
+// About section: rows waiting for your own words. Edit this list to rename or add rows.
+export const ABOUT_PLACEHOLDERS = ["Personal background", "Interests", "Motivations", "Values", "Personal story"];
+
+// The Lab section: rows waiting for your own work. Edit this list to rename or add rows.
+export const LAB = {
+  description: "A space for experimentation, unconventional thinking and intellectual curiosity.",
+  items: [
+    "Sketches",
+    "Book reflections",
+    "Creative experiments",
+    "Behind the scenes",
+    "Unfinished ideas",
+    "Personal writing",
+  ],
+};
+
+// Music section: topics that are waiting for real content. Edit this list to rename or add cards.
+export const MUSIC_TOPICS = ["Performances", "Production", "Tracks"];
+
+// Social platforms, used by the Music and Contact sections. Replace placeholder links with your own.
+export const SOCIAL_LINKS = [
+  { key: "youtube", href: "https://www.youtube.com/@SebasPerez-sp", label: "YouTube" },
+  { key: "soundcloud", href: "https://soundcloud.com/", label: "SoundCloud" },
+  { key: "tiktok", href: "https://www.tiktok.com/@sebxsjairo", label: "TikTok" },
+  { key: "instagram", href: "https://www.instagram.com/sxbxssp/", label: "Instagram" },
 ];
 
 // -----------------------------------------------------------
@@ -91,9 +112,9 @@ export const VIDEO_EMBEDS: { title: string; src: string }[] = [
 ];
 
 // -----------------------------------------------------------
-// Professional page
+// Work section
 // -----------------------------------------------------------
-export const PROFESSIONAL_HERO = {
+export const WORK_HERO = {
   headline: "Building a career at the edge of finance and strategy.",
   pull: "Fortune favors the bold.",
   meta1: "Incoming McKinsey & Company · JPMorgan Chase Summer Analyst",
@@ -121,7 +142,7 @@ export const EXPERIENCE = [
   },
 ];
 
-export const PROFESSIONAL_STATS = [
+export const WORK_STATS = [
   { value: "AI", label: "Certification from UF" },
   { value: "JPMorgan", label: "Commercial Banking Summer '26 Intern" },
   { value: "7", label: "Case competitions" },
@@ -134,7 +155,7 @@ export const COMPETITION_RESULTS = [
   { name: "Miami Herbert Case Competition", result: "First Place", year: "2023" },
 ];
 
-export const PROFESSIONAL_NARRATIVE = [
+export const WORK_NARRATIVE = [
   {
     number: "01",
     heading: "Every business has untapped potential.",
@@ -161,7 +182,7 @@ export const PROFESSIONAL_NARRATIVE = [
   },
 ];
 
-export const PROFESSIONAL_CARDS = [
+export const WORK_CARDS = [
   {
     title: "Education",
     body: "B.S. Business Administration, UF Warrington College of Business, May 2027. Minor in Philosophy. Focus on finance, communication, and leadership.",

@@ -16,43 +16,40 @@ interface GalleryGridProps {
   previewCount?: number;
 }
 
+/** One rounded photo. Photos keep their original colors. Empty slots show a quiet dark placeholder. */
 function PhotoCell({ img, onClick, className = "" }: { img: GalleryImage; onClick: () => void; className?: string }) {
   return (
     <div
       onClick={onClick}
-      className={`group cursor-pointer relative img-zoom ${className}`}
-      style={{ background: "#F2F0EB" }}
+      className={`group card card-hover cursor-pointer img-zoom ${className}`}
+      style={{ background: "#0b0b0b" }}
     >
       {img.src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={img.src} alt={img.alt} className="absolute inset-0 w-full h-full object-cover" />
+        <img src={img.src} alt={img.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
       ) : (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2"
-          style={{ border: "1px solid rgba(27,42,74,0.14)" }}>
-          <span className="eyebrow" style={{ color: "rgba(27,42,74,0.45)" }}>Coming Soon</span>
+        <div className="absolute inset-0 flex items-center justify-center" style={{ border: "1px dashed rgba(245,245,242,0.22)", borderRadius: "20px" }}>
+          <span className="eyebrow" style={{ color: "var(--color-ink-3)" }}>Coming Soon</span>
         </div>
       )}
 
       {img.src && (
-        <>
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-            style={{ background: "rgba(10,9,8,0.35)" }} />
-          <div className="absolute bottom-0 left-0 p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 translate-y-1 group-hover:translate-y-0">
-            <span className="eyebrow block" style={{ color: "rgba(250,249,246,0.7)" }}>{img.category}</span>
-            <span className="eyebrow link-underline is-active text-white mt-2 block" style={{ fontSize: "10px" }}>View</span>
-          </div>
-        </>
+        <div className="absolute bottom-4 left-4 translate-y-1 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <span className="inline-block rounded-xl px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white" style={{ background: "rgba(0,0,0,0.72)" }}>
+            {img.category}
+          </span>
+        </div>
       )}
     </div>
   );
 }
 
-// Asymmetric lookbook layout for the first four cells
+// Editorial layout for the first photos: wide and narrow cells that swap sides, with different heights.
 const LAYOUT = [
-  "md:col-span-7",
-  "md:col-span-5",
-  "md:col-span-5",
-  "md:col-span-7",
+  "md:col-span-7 md:h-[460px] lg:h-[560px]",
+  "md:col-span-5 md:h-[460px] lg:h-[560px] md:mt-10",
+  "md:col-span-4 md:h-[360px] lg:h-[420px]",
+  "md:col-span-8 md:h-[360px] lg:h-[420px]",
 ];
 
 export default function GalleryGrid({ images, previewCount = 4 }: GalleryGridProps) {
@@ -62,41 +59,39 @@ export default function GalleryGrid({ images, previewCount = 4 }: GalleryGridPro
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">
         {preview.map((img, i) => (
           <PhotoCell
             key={img.id}
             img={img}
             onClick={() => img.src && setLightbox(img)}
-            className={`${LAYOUT[i % LAYOUT.length]} aspect-[4/5] md:aspect-auto md:h-[520px] lg:h-[600px]`}
+            className={`${LAYOUT[i % LAYOUT.length]} aspect-[4/5] md:aspect-auto`}
           />
         ))}
       </div>
 
       {images.length > previewCount && (
-        <div className="mt-10 flex items-center gap-6">
-          <div className="flex-1 hairline" />
-          <button onClick={() => setExpanded(true)} className="eyebrow link-underline" style={{ color: "#1B2A4A" }}>
+        <div className="mt-10 flex justify-center">
+          <button onClick={() => setExpanded(true)} className="pill bg-white text-black">
             View all {images.length} photos
           </button>
-          <div className="flex-1 hairline" />
         </div>
       )}
 
       <AnimatePresence>
         {expanded && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "#FAF9F6" }}>
-            <div className="sticky top-0 z-10 flex items-center justify-between px-6 md:px-12 py-5"
-              style={{ background: "rgba(250,249,246,0.96)", borderBottom: "1px solid rgba(27,42,74,0.12)" }}>
-              <h2 className="eyebrow" style={{ color: "rgba(44,40,37,0.6)" }}>Photography — All</h2>
-              <button onClick={() => setExpanded(false)} className="eyebrow link-underline" style={{ color: "#1B2A4A" }}>Close</button>
+            className="fixed inset-0 z-[60] overflow-y-auto" style={{ background: "#000000" }}>
+            <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-5 md:px-12"
+              style={{ background: "rgba(0,0,0,0.92)", borderBottom: "1px solid var(--color-line)" }}>
+              <h2 className="eyebrow">Photography — All</h2>
+              <button onClick={() => setExpanded(false)} className="pill bg-white text-black">Close</button>
             </div>
-            <div className="px-6 md:px-12 py-10 columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
+            <div className="columns-1 gap-5 space-y-5 px-6 py-10 sm:columns-2 md:px-12 lg:columns-3">
               {images.map((img) => (
                 <div key={img.id} className="break-inside-avoid">
                   <PhotoCell img={img} onClick={() => img.src && setLightbox(img)}
-                    className={img.aspect === "portrait" ? "aspect-[4/5]" : "aspect-[4/3]"} />
+                    className={`relative ${img.aspect === "portrait" ? "aspect-[4/5]" : "aspect-[4/3]"}`} />
                 </div>
               ))}
             </div>
@@ -108,16 +103,16 @@ export default function GalleryGrid({ images, previewCount = 4 }: GalleryGridPro
         {lightbox && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-[70] flex items-center justify-center p-6"
-            style={{ background: "rgba(26,23,22,0.96)" }}
+            style={{ background: "rgba(0,0,0,0.96)" }}
             onClick={() => setLightbox(null)}>
             <motion.div initial={{ scale: 0.97, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.97, opacity: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+              exit={{ scale: 0.97, opacity: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={lightbox.src} alt={lightbox.alt} className="w-full h-auto max-h-[85vh] object-contain" />
+              <img src={lightbox.src} alt={lightbox.alt} className="h-auto max-h-[85vh] w-full rounded-[20px] object-contain" />
               <div className="mt-4 flex items-center justify-between">
-                <span className="eyebrow" style={{ color: "rgba(250,249,246,0.5)" }}>{lightbox.category}</span>
-                <button onClick={() => setLightbox(null)} className="eyebrow link-underline text-white">Close</button>
+                <span className="eyebrow" style={{ color: "rgba(245,245,242,0.6)" }}>{lightbox.category}</span>
+                <button onClick={() => setLightbox(null)} className="pill bg-white text-black">Close</button>
               </div>
             </motion.div>
           </motion.div>

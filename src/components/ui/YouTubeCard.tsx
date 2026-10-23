@@ -6,34 +6,38 @@ interface YouTubeCardProps {
   label?: string;
 }
 
+/** A rounded video card. The thumbnail keeps its original colors; the title sits on its own small plate. */
 export default function YouTubeCard({ videoId, title, label }: YouTubeCardProps) {
   return (
     <a
       href={`https://www.youtube.com/watch?v=${videoId}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative block aspect-video img-zoom"
-      style={{ background: "#1A1716" }}
+      className="group card card-hover relative block aspect-video img-zoom outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+      style={{ background: "#0b0b0b" }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
         alt={title}
-        className="w-full h-full object-cover"
+        loading="lazy"
+        className="h-full w-full object-cover"
       />
-      <div className="absolute inset-0" style={{ background: "rgba(10,9,8,0.45)" }} />
 
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
-          style={{ border: "1px solid rgba(250,249,246,0.6)", background: "rgba(10,9,8,0.25)", backdropFilter: "blur(6px)" }}>
-          <div className="w-0 h-0 ml-1" style={{ borderTop: "8px solid transparent", borderBottom: "8px solid transparent", borderLeft: "13px solid #FAF9F6" }} />
+        <div
+          className="flex h-16 w-16 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110"
+          style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.7)" }}
+        >
+          <div className="ml-1 h-0 w-0" style={{ borderTop: "9px solid transparent", borderBottom: "9px solid transparent", borderLeft: "15px solid #fff" }} />
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-6">
-        {label && <span className="eyebrow block mb-2" style={{ color: "rgba(250,249,246,0.6)" }}>{label}</span>}
-        <p className="font-serif text-white leading-tight" style={{ fontSize: "clamp(1.5rem, 2.4vw, 2rem)", fontWeight: 400 }}>{title}</p>
-        <span className="eyebrow link-underline mt-3 text-white" style={{ fontSize: "10px" }}>Watch</span>
+      <div className="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5">
+        <div className="inline-block max-w-full rounded-2xl px-4 py-3" style={{ background: "rgba(0,0,0,0.72)" }}>
+          {label && <span className="eyebrow block" style={{ color: "rgba(255,255,255,0.7)", fontSize: "10px" }}>{label}</span>}
+          <p className="mt-1 text-lg font-bold leading-tight text-white md:text-xl">{title}</p>
+        </div>
       </div>
     </a>
   );
@@ -42,11 +46,11 @@ export default function YouTubeCard({ videoId, title, label }: YouTubeCardProps)
 export function YouTubeSlot({ label = "Video" }: { accent?: string; label?: string }) {
   return (
     <div
-      className="aspect-video flex flex-col items-center justify-center gap-2"
-      style={{ background: "#F2F0EB", border: "1px solid rgba(27,42,74,0.14)" }}
+      className="card flex aspect-video flex-col items-center justify-center gap-2"
+      style={{ background: "#0b0b0b", border: "1px dashed rgba(245,245,242,0.22)" }}
     >
-      <span className="eyebrow" style={{ color: "rgba(27,42,74,0.45)" }}>Coming Soon</span>
-      <span className="font-serif italic" style={{ color: "rgba(27,42,74,0.35)", fontSize: "18px" }}>Latest {label.toLowerCase()} video</span>
+      <span className="eyebrow" style={{ color: "var(--color-ink-3)" }}>Coming Soon</span>
+      <span className="text-lg font-bold text-ink-3">Latest {label.toLowerCase()} video</span>
     </div>
   );
 }

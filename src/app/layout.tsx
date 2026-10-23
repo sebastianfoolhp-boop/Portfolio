@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond } from "next/font/google";
-import NavBar from "@/components/layout/NavBar";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -13,9 +12,16 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "Sebastian Perez",
-  description: "Sebastian Perez — finance, strategy, music, and photography.",
+  description: "A collection of what I create, what I do and everything I'm curious about.",
 };
 
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  colorScheme: "dark",
+};
+
+// Root layout only: fonts and the page shell. The floating dock lives in
+// app/(site)/layout.tsx so it never appears over the Sanity Studio at /studio.
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,10 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`h-full ${cormorant.variable}`}>
-      <body className="min-h-full flex flex-col antialiased pt-16">
-        <NavBar />
-        {children}
-      </body>
+      <body className="min-h-full flex flex-col antialiased bg-void text-ink">{children}</body>
     </html>
   );
 }

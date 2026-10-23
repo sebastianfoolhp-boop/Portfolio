@@ -39,11 +39,11 @@ interface IconLinkItem {
   label: string;
 }
 
-export default function IconLinks({ links, dark = false }: { links: IconLinkItem[]; dark?: boolean }) {
-  const color = dark ? "rgba(250,249,246,0.75)" : "#1B2A4A";
-  const border = dark ? "1px solid rgba(250,249,246,0.25)" : "1px solid rgba(27,42,74,0.25)";
-  const bgHover = dark ? "#FAF9F6" : "#1B2A4A";
-  const colorHover = dark ? "#1B2A4A" : "#FAF9F6";
+export default function IconLinks({ links }: { links: IconLinkItem[] }) {
+  const color = "rgba(245,245,242,0.75)";
+  const border = "1px solid rgba(245,245,242,0.25)";
+  const bgHover = "#F5F5F2";
+  const colorHover = "#000000";
 
   return (
     <div className="flex items-center gap-2.5">
@@ -54,7 +54,7 @@ export default function IconLinks({ links, dark = false }: { links: IconLinkItem
           target="_blank"
           rel="noopener noreferrer"
           aria-label={l.label}
-          className="w-10 h-10 flex items-center justify-center transition-colors duration-300"
+          className="flex h-11 w-11 items-center justify-center rounded-2xl transition-colors duration-300"
           style={{ border, color, background: "transparent" }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLElement;

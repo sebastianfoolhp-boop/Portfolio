@@ -1,60 +1,61 @@
 import { ReactNode } from "react";
+import LazyVideo from "./LazyVideo";
 
 interface PageHeroProps {
+  /** Section number shown above the title, like "02". */
+  number?: string;
   title: string;
   subtitle?: string;
+  /** Looping silent video behind the title. Loads only when you scroll near it. */
+  videoSrc?: string;
+  /** Still image behind the title (used when there is no video). */
   imageSrc?: string;
   imageAlt?: string;
-  videoSrc?: string;
-  colorGradient?: string;
-  fullHeight?: boolean;
+  /** Banner height. Any CSS length; svh keeps it correct under mobile browser toolbars. */
+  height?: string;
   children?: ReactNode;
 }
 
+/**
+ * Rounded banner that opens the Music and Cinema sections. The footage keeps its
+ * original colors; only a light flat tint sits on top so the white title stays readable.
+ */
 export default function PageHero({
+  number,
   title,
   subtitle,
+  videoSrc,
   imageSrc,
   imageAlt,
-  videoSrc,
-  colorGradient,
-  fullHeight = false,
+  height = "64svh",
   children,
 }: PageHeroProps) {
-  const height = fullHeight ? "calc(100vh - 64px)" : "72vh";
-  const minHeight = fullHeight ? "600px" : "480px";
-
   return (
-    <section
-      className="relative flex items-center justify-center overflow-hidden img-zoom"
-      style={{ height, minHeight, background: "#1A1716" }}
-    >
-      {videoSrc ? (
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" src={videoSrc} />
-      ) : imageSrc ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={imageSrc} alt={imageAlt ?? title} className="absolute inset-0 w-full h-full object-cover" />
-      ) : null}
+    <div className="px-3 pt-3 md:px-6 md:pt-6">
+      <div
+        className="img-zoom relative flex items-end overflow-hidden"
+        style={{ height, minHeight: "380px", background: "#0b0b0b", borderRadius: "28px" }}
+      >
+        {videoSrc ? (
+          <LazyVideo src={videoSrc} className="absolute inset-0 h-full w-full object-cover" />
+        ) : imageSrc ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={imageSrc} alt={imageAlt ?? title} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+        ) : null}
 
-      {colorGradient && <div className="absolute inset-0" style={{ background: colorGradient }} />}
+        {/* Light flat tint, just enough for the white title */}
+        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.28)" }} />
 
-      <div className="absolute inset-0" style={{ background: "rgba(10,9,8,0.42)" }} />
+        <div className="relative z-10 w-full px-6 pb-8 md:px-12 md:pb-12" style={{ textShadow: "0 2px 28px rgba(0,0,0,0.55)" }}>
+          {number && <span className="eyebrow block" style={{ color: "rgba(255,255,255,0.85)" }}>{number}</span>}
+          <h2 className="display mt-4 text-white" style={{ fontSize: "clamp(3.5rem, 11vw, 9.5rem)" }}>
+            {title}
+          </h2>
+          {subtitle && <p className="eyebrow mt-5" style={{ color: "rgba(255,255,255,0.85)" }}>{subtitle}</p>}
+        </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 md:px-16">
-        <h1
-          className="font-serif text-white uppercase leading-none"
-          style={{ fontSize: "clamp(2.6rem, 7vw, 6rem)", letterSpacing: "0.2em", fontWeight: 300, paddingLeft: "0.2em" }}
-        >
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="eyebrow mt-6" style={{ color: "rgba(250,249,246,0.7)" }}>
-            {subtitle}
-          </p>
-        )}
+        {children}
       </div>
-
-      {children}
-    </section>
+    </div>
   );
 }
