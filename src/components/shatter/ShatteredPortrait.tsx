@@ -6,9 +6,10 @@ import { useTransform, useMotionTemplate, type MotionValue } from "framer-motion
 import { SHARDS, SHATTER, VIEWBOX, VIEW, type Shard, type SectionKey } from "./shards";
 import { scrollToSection } from "@/lib/scrollToSection";
 
-const PORTRAIT_SRC = "/images/portrait-bw.jpg";
+const DEFAULT_PORTRAIT = "/images/portrait-bw.jpg";
 
 interface PieceProps {
+  src: string;
   shard: Shard;
   progress: MotionValue<number>;
   reduced: boolean;
@@ -18,7 +19,7 @@ interface PieceProps {
   onSelect: (id: SectionKey) => void;
 }
 
-function ShardPiece({ shard, progress, reduced, active, onActivate, onDeactivate, onSelect }: PieceProps) {
+function ShardPiece({ src, shard, progress, reduced, active, onActivate, onDeactivate, onSelect }: PieceProps) {
   const gRef = useRef<SVGGElement>(null);
   const [cx, cy] = shard.centroid;
   const [dx, dy] = shard.dir;
@@ -54,7 +55,7 @@ function ShardPiece({ shard, progress, reduced, active, onActivate, onDeactivate
         }}
       >
         <g clipPath={`url(#${shard.id}-clip)`}>
-          <image href={PORTRAIT_SRC} x={0} y={0} width={VIEWBOX.w} height={VIEWBOX.h} preserveAspectRatio="none" />
+          <image href={src} x={0} y={0} width={VIEWBOX.w} height={VIEWBOX.h} preserveAspectRatio="none" />
         </g>
         {/* Fracture edges: interior cracks only, hidden wherever they would cross empty black. */}
         <path
@@ -98,9 +99,11 @@ interface ShatteredPortraitProps {
   /** 0 = assembled, 1 = fully separated. Driven by how far the hero has scrolled away. */
   progress: MotionValue<number>;
   reduced: boolean;
+  /** The portrait image. Defaults to the black-and-white one. */
+  src?: string;
 }
 
-export default function ShatteredPortrait({ progress, reduced }: ShatteredPortraitProps) {
+export default function ShatteredPortrait({ progress, reduced, src = DEFAULT_PORTRAIT }: ShatteredPortraitProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<SectionKey | null>(null);
   const [labelPos, setLabelPos] = useState<{ x: number; y: number } | null>(null);
@@ -189,6 +192,7 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
     <div ref={wrapRef} className="portrait-wrap absolute inset-0">
       {/* BREATHING layer: the whole portrait scales as one unit, outside the per-piece scroll and hover transforms. */}
       <div className="portrait-breathe absolute inset-0" data-paused={String(!onScreen || active !== null)}>
+      <div className="portrait-idle absolute inset-0">
       <svg
         viewBox={`${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`}
         preserveAspectRatio="xMidYMid meet"
@@ -209,7 +213,7 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
           </filter>
           <mask id="shard-line-mask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse"
             x={0} y={0} width={VIEWBOX.w} height={VIEWBOX.h}>
-            <image href={PORTRAIT_SRC} x={0} y={0} width={VIEWBOX.w} height={VIEWBOX.h}
+            <image href={src} x={0} y={0} width={VIEWBOX.w} height={VIEWBOX.h}
               preserveAspectRatio="none" filter="url(#shard-silhouette)" />
           </mask>
           {SHARDS.map((s) => (
@@ -220,6 +224,7 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
         </defs>
         {SHARDS.map((s) => (
           <ShardPiece
+            src={src}
             key={s.id}
             shard={s}
             progress={progress}
@@ -231,6 +236,7 @@ export default function ShatteredPortrait({ progress, reduced }: ShatteredPortra
           />
         ))}
       </svg>
+      </div>
       </div>
 
       {/* Section name over the hovered, pressed or focused piece */}

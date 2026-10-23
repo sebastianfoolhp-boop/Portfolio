@@ -167,6 +167,25 @@ body {
   animation: portrait-breathe 5.5s ease-in-out infinite;
   will-change: transform;
 }
+/* Game-character idle: a slow float and tiny sway on its own layer, plus a "spawn" pop when the page loads.
+   Separate from breathing (outer) and from the per-piece scroll and hover transforms (inside). */
+@keyframes portrait-idle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-0.9%) rotate(0.35deg); }
+  75% { transform: translateY(-0.9%) rotate(-0.35deg); }
+  50% { transform: translateY(-1.6%) rotate(0deg); }
+}
+@keyframes portrait-spawn {
+  0% { transform: scale(0.94) translateY(3%); }
+  60% { transform: scale(1.025) translateY(-0.8%); }
+  100% { transform: scale(1) translateY(0); }
+}
+.portrait-idle {
+  transform-origin: 50% 60%;
+  animation: portrait-spawn 900ms cubic-bezier(0.22,1,0.36,1) 0.7s both, portrait-idle 4.2s ease-in-out 1.6s infinite;
+}
+.portrait-breathe[data-paused="true"] .portrait-idle { animation-play-state: running, paused; }
+
 /* Calm while a piece is hovered, and while the portrait is offscreen */
 .portrait-breathe[data-paused="true"] { animation-play-state: paused; }
 
@@ -307,5 +326,6 @@ body {
   .caret-blink { animation: none; }
   .hero-portrait { animation: none; opacity: 1; }
   .portrait-breathe { animation: none; will-change: auto; }
+  .portrait-idle { animation: none; }
   .portrait-cursor-ring, .portrait-cursor, .portrait-cursor-dot, .portrait-cursor-text { transition: none; }
 }

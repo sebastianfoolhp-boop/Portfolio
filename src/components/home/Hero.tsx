@@ -13,7 +13,7 @@ import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
  * globals.css. The portrait is NOT fixed to the screen: it scrolls away with the
  * hero, and the pieces drift apart a little as it does.
  */
-export default function Hero() {
+export default function Hero({ portraitSrc }: { portraitSrc?: string }) {
   const ref = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
   const [hint, setHint] = useState<"idle" | "show" | "gone">("idle");
@@ -32,7 +32,7 @@ export default function Hero() {
           <HomeIntro onTyped={() => setHint((h) => (h === "idle" ? "show" : h))} />
         </div>
         <div className="hero-portrait">
-          <ShatteredPortrait progress={reduced ? still : scrollYProgress} reduced={reduced} />
+          <ShatteredPortrait src={portraitSrc} progress={reduced ? still : scrollYProgress} reduced={reduced} />
         </div>
         <div aria-hidden className="hero-spacer" />
       </div>
