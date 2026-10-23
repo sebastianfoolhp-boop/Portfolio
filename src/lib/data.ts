@@ -42,7 +42,7 @@ export const HOME_INTRO = {
 export const HOME_ABOUT = {
   heading: `Sebastian "Sebas" Perez`,
   body: `Colombian roots, global ambitions, and a permanent bias toward doing the hard thing.`,
-  meta: `UF Warrington, Class of 2027 · Philosophy Minor · Incoming McKinsey & Company`,
+  meta: `UF Warrington, Class of 2027 · Philosophy Minor · Incoming Analyst at McKinsey and Company`,
 };
 
 // About section: rows waiting for your own words. Edit this list to rename or add rows.
